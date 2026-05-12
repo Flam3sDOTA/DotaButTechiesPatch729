@@ -1,0 +1,240 @@
+"DOTAAbilities"
+{
+    "Version"   "1"
+
+    //=================================================================================================================
+    // Techies: Proximity Mines
+    //=================================================================================================================
+    "custom_techies_land_mines"
+    {
+        "BaseClass"                     "ability_lua"
+        "ScriptFile"                    "abilities/custom_techies_land_mines"
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+        "AbilityUnitDamageType"         "DAMAGE_TYPE_MAGICAL"
+        "SpellImmunityType"             "SPELL_IMMUNITY_ENEMIES_NO"
+        "AbilitySound"                  "Hero_Techies.RemoteMine.Plant"
+        "AbilityTextureName"            "techies_land_mines"
+        "HasScepterUpgrade"             "1"
+        "AbilityCastPoint"              "0.0"
+        "AbilityCooldown"               "0"
+        "AbilityManaCost"               "110 130 150 170"
+        "AbilityCharges"                "3"
+        "AbilityValues"
+        {
+            "damage"                    "200 400 600 800"
+            "activation_delay"          "1.75"
+            "radius"                    "400"
+            "detonation_delay"          "1.6"
+            "building_damage_pct"       "25"
+            "AbilityChargeRestoreTime"
+            {
+                "value"	                                "23"
+                "special_bonus_unique_techies_10_l"     "-3"
+            }
+            "AbilityCastRange"
+            {
+                "value"                 "100"
+                "special_bonus_scepter" "+300"
+            }
+        }
+    }
+
+    //=================================================================================================================
+    // Techies: Stasis Trap
+    //=================================================================================================================
+    "custom_techies_stasis_trap"
+    {
+        "BaseClass"             "ability_lua"
+        "ScriptFile"            "abilities/custom_techies_stasis_trap"
+        "AbilityTextureName"    "techies_stasis_trap"
+        "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+        "AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+        "SpellImmunityType"     "SPELL_IMMUNITY_ENEMIES_NO"
+        "SpellDispellableType"  "SPELL_DISPELLABLE_YES"
+        "HasScepterUpgrade"     "1"
+        "AbilityCastPoint"      "1.0"
+        "AbilityCooldown"       "20 16 13 10"
+        "AbilityManaCost"       "80 110 140 160"
+
+        "AbilityValues"
+        {
+            "trigger_radius"    "400"
+            "stun_radius"       "400"
+            "root_duration"     "2 3 4 5"
+            "activation_delay"  "2.0"
+            "AbilityCastRange"
+            {
+                "value"                 "150"
+                "special_bonus_scepter" "+300"
+            }
+        }
+    }
+
+    //=================================================================================================================
+    // Techies: Blast Off!
+    //=================================================================================================================
+    "custom_techies_suicide12"
+    {
+        "BaseClass"             "ability_lua"
+        "ScriptFile"            "abilities/custom_techies_suicide12"
+        "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+        "AbilityUnitDamageType" "DAMAGE_TYPE_PHYSICAL"
+        "SpellImmunityType"     "SPELL_IMMUNITY_ENEMIES_NO"
+        "AbilityTextureName"    "techies_suicide_custom"
+        "AbilityCastPoint"      "1.0"
+        "AbilityManaCost"       "100 125 150 175"
+        "HasShardUpgrade"       "1"
+        "AbilityValues"
+        {
+            "damage"
+            {
+                "value"	                                "300 400 500 600"
+                "special_bonus_unique_techies_15_r"     "+300"
+            }
+            "silence_duration"  "4 5 6 7"
+            "hp_cost_pct"       "50"
+            "radius"            "400"
+            "stun_duration"     "1.75"
+            "AbilityCastRange"
+            {
+                "value"                 "1000"
+                "special_bonus_shard"   "+300"
+            }
+
+
+            "AbilityCooldown"
+            {
+                "value"                                 "35"
+                "special_bonus_unique_techies_20_l"     "-22"
+            }
+        }
+    }
+
+    //=================================================================================================================
+    // Techies: Minefield Sign
+    //=================================================================================================================
+    "custom_techies_minefield_sign"
+    {
+        "BaseClass"             "ability_lua"
+        "ScriptFile"            "abilities/custom_techies_minefield_sign"
+        "AbilityTextureName"    "techies_minefield_sign"
+        "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+        "AbilityCastRange"      "10"
+        "AbilityCastPoint"      "0"
+        "AbilityCooldown"       "360"
+        "AbilityManaCost"       "0"
+        "HasScepterUpgrade"     "1"
+        "MaxLevel"              "1"
+
+        "AbilityValues"
+        {
+            "duration"          "180"
+            "sign_aura_radius"  "125"
+        }
+    }
+
+    //=================================================================================================================
+    // Techies: Focused Detonate
+    //=================================================================================================================
+    "custom_techies_focused_detonate"
+    {
+        "BaseClass"                     "ability_lua"
+        "ScriptFile"                    "abilities/custom_techies_focused_detonate"
+        "AbilityTextureName"            "techies_focused_detonate"
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_UNRESTRICTED | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+        "AbilityCastRange"              "16384"
+        "AbilityCastPoint"              "0"
+        "AbilityCooldown"               "1.0"
+        "AbilityManaCost"               "0"
+        "MaxLevel"                      "1"
+
+        "AbilityValues"
+        {
+            "radius"                    "700"
+        }
+    }
+
+    //=================================================================================================================
+    // Techies: Remote Mines
+    //=================================================================================================================
+    "custom_techies_remote_mines"
+    {
+        "BaseClass"                     "ability_lua"
+        "ScriptFile"                    "abilities/custom_techies_remote_mines"
+        "AbilityTextureName"            "techies_remote_mines"
+        "AbilityType"                   "ABILITY_TYPE_ULTIMATE"
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+        "AbilityUnitDamageType"         "DAMAGE_TYPE_PHYSICAL"
+        "SpellImmunityType"             "SPELL_IMMUNITY_ENEMIES_NO"
+        "AbilityCastPoint"              "0.75"
+        "AbilityCooldown"               "8"
+        "AbilityManaCost"               "120 180 240"
+        "MaxLevel"                      "3"
+        "HasScepterUpgrade"             "1"
+
+        "AbilityValues"
+        {
+            "radius"                    "425"
+            "duration"                  "600"
+            "detonation_delay"          "0.25"
+            "fade_time"                 "2.0"
+            "damage"
+            {
+                "value"                 "300 450 600"
+                "special_bonus_scepter" "+150"
+            }
+            "AbilityCastRange"
+            {
+                "value"                 "500"
+                "special_bonus_scepter" "+300"
+            }
+        }
+    }
+
+    //=================================================================================================================
+    // Techies: Remote Mine Self-Detonate
+    //=================================================================================================================
+    "custom_techies_remote_mine_self_detonate"
+    {
+        "BaseClass"                     "ability_lua"
+        "ScriptFile"                    "abilities/custom_techies_remote_mine_self_detonate"
+        "AbilityTextureName"            "techies_detonate_custom"
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+        "AbilityCastPoint"              "0"
+        "AbilityCooldown"               "0"
+        "AbilityManaCost"               "0"
+        "MaxLevel"                      "1"
+    }
+
+    "special_bonus_unique_techies_10_l"
+    {
+        "BaseClass"                 "special_bonus_base"
+        "AbilityType"               "ABILITY_TYPE_ATTRIBUTES"
+        "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    }
+
+    "special_bonus_unique_techies_15_r"
+    {
+        "BaseClass"                 "special_bonus_base"
+        "AbilityType"               "ABILITY_TYPE_ATTRIBUTES"
+        "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    }
+
+    "special_bonus_unique_techies_20_l"
+    {
+        "BaseClass"                 "special_bonus_base"
+        "AbilityType"               "ABILITY_TYPE_ATTRIBUTES"
+        "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+    }
+
+    "special_bonus_unique_techies_25_l"
+    {
+        "BaseClass"                 "special_bonus_base"
+        "AbilityType"               "ABILITY_TYPE_ATTRIBUTES"
+        "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+        "AbilityValues"
+        {
+            "value"                 "60"
+        }
+    }
+}
