@@ -68,9 +68,7 @@ function modifier_custom_techies_remote_mine:Explode()
     ParticleManager:ReleaseParticleIndex(pfx)
 
     EmitSoundOnLocationWithCaster(pos, "Hero_Techies.StickyBomb.Detonate", self.caster)
-    GridNav:DestroyTreesAroundPoint(pos, radius, false)
     self.ability:CreateVisibilityNode(pos, 500, 3.0)
-
     self.parent:ForceKill(false)
 end
 
@@ -83,6 +81,23 @@ function modifier_custom_techies_remote_mine:CheckState()
         [MODIFIER_STATE_INVISIBLE]                   = self.faded,
     }
 end
+
+function modifier_custom_techies_remote_mine:DeclareFunctions()
+    return {
+        MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL,
+        MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL,
+        MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE,
+        MODIFIER_EVENT_ON_ATTACK_LANDED,
+    }
+end
+
+function modifier_custom_techies_remote_mine:OnAttackLanded(keys)
+    if not IsServer() then return end
+    if keys.target == self.parent then
+        self.parent:Kill(self.ability, keys.attacker)
+    end
+end
+
 
 function modifier_custom_techies_remote_mine:SetRooted(bValue)
     self.bRootEnabled = bValue
