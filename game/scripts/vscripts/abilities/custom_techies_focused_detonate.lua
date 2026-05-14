@@ -30,5 +30,9 @@ function custom_techies_focused_detonate:OnSpellStart()
     end
 end
 
+function custom_techies_focused_detonate:GetAssociatedPrimaryAbilities()
+    return "custom_techies_remote_mines"
+end
+
 function custom_techies_focused_detonate:IsStealable()  return false end
 function custom_techies_focused_detonate:ProcsMagicStick() return false end

@@ -31,3 +31,7 @@ function custom_techies_remote_mines:OnUpgrade()
         focused:SetLevel(1)
     end
 end
+
+function custom_techies_remote_mines:GetAssociatedSecondaryAbilities()
+    return "custom_techies_focused_detonate"
+end

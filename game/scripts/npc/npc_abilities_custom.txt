@@ -177,6 +177,7 @@
         "MaxLevel"                      "3"
         "HasScepterUpgrade"             "1"
         "AbilityProcsMagicStick"        "1"
+        "LinkedAbility"                 "custom_techies_focused_detonate"
 
         "AbilityValues"
         {
