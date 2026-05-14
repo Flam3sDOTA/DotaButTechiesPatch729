@@ -97,6 +97,7 @@ function modifier_custom_techies_stasis_trap_deploy:CheckState()
         [MODIFIER_STATE_MAGIC_IMMUNE]                = true,
         [MODIFIER_STATE_CANNOT_BE_MOTION_CONTROLLED] = true,
         [MODIFIER_STATE_INVISIBLE]                   = self.active,
+        [MODIFIER_STATE_LOW_ATTACK_PRIORITY]         = true,
     }
 end
 
