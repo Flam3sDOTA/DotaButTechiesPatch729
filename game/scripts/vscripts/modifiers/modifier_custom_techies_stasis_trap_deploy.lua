@@ -4,6 +4,7 @@ LinkLuaModifier("modifier_custom_techies_stasis_trap_root", "modifiers/modifier_
 
 function modifier_custom_techies_stasis_trap_deploy:IsHidden()   return true  end
 function modifier_custom_techies_stasis_trap_deploy:IsPurgable()  return false end
+function modifier_custom_techies_stasis_trap_deploy:IsDebuff() return false end
 
 function modifier_custom_techies_stasis_trap_deploy:OnCreated()
     if not IsServer() then return end
@@ -98,6 +99,8 @@ function modifier_custom_techies_stasis_trap_deploy:CheckState()
         [MODIFIER_STATE_CANNOT_BE_MOTION_CONTROLLED] = true,
         [MODIFIER_STATE_INVISIBLE]                   = self.active,
         [MODIFIER_STATE_LOW_ATTACK_PRIORITY]         = true,
+        [MODIFIER_STATE_DEBUFF_IMMUNE]               = true,
+        [MODIFIER_STATE_UNTARGETABLE]                = true,
     }
 end
 
@@ -111,12 +114,18 @@ function modifier_custom_techies_stasis_trap_deploy:DeclareFunctions()
         MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL,
         MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE,
         MODIFIER_EVENT_ON_ATTACK_LANDED,
+        MODIFIER_PROPERTY_DISABLE_HEALING,
+        MODIFIER_PROPERTY_AVOID_SPELL,
+        MODIFIER_PROPERTY_DODGE_PROJECTILE,
     }
 end
 
 function modifier_custom_techies_stasis_trap_deploy:GetAbsoluteNoDamageMagical()  return 1 end
 function modifier_custom_techies_stasis_trap_deploy:GetAbsoluteNoDamagePhysical() return 1 end
 function modifier_custom_techies_stasis_trap_deploy:GetAbsoluteNoDamagePure()     return 1 end
+function modifier_custom_techies_stasis_trap_deploy:GetDisableHealing()           return 1 end
+function modifier_custom_techies_stasis_trap_deploy:GetModifierAvoidSpell()       return 1 end
+function modifier_custom_techies_stasis_trap_deploy:GetModifierDodgeProjectile()  return 1 end
 
 function modifier_custom_techies_stasis_trap_deploy:OnAttackLanded(keys)
     if not IsServer() then return end

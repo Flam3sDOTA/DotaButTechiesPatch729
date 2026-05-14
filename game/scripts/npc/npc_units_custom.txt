@@ -16,6 +16,10 @@
         "Ability2"                  ""
         "Ability3"                  ""
         "Ability4"                  ""
+        "AutoAttacksByDefault"     "0"
+        "IsSummoned"               "0"
+        "CanBeDominated"           "0"
+        "IsAncient"                "1"
 
         "ArmorPhysical"             "0"
         "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
@@ -45,6 +49,10 @@
 
         "TeamName"                  "DOTA_TEAM_NEUTRALS"
         "UnitRelationshipClass"     "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_WARD"
+        "HasInventory"              "0"
+        "WakesNeutrals"             "0"
+        "ImmuneToOmnislash"         "1"
+        "ImmuneToInfest"            "1"
     }
 
     "npc_dota_techies_stasis_trap"
@@ -56,9 +64,17 @@
         "SoundSet"                  "0"
         "Level"                     "1"
         "ModelScale"                "1.0"
-        "SelectionGroup"            "Techies_LandMines"
+        "SelectionGroup"            "Techies_StasisTraps"
         "BoundsHullName"            "DOTA_HULL_SIZE_SMALL"
         "IgnoreAddSummonedToSelection"  "1"
+        "AutoAttacksByDefault"     "0"
+        "IsSummoned"               "0"
+        "CanBeDominated"           "0"
+        "IsAncient"                "1"
+        "HasInventory"             "0"
+        "WakesNeutrals"            "0"
+        "ImmuneToOmnislash"        "1"
+        "ImmuneToInfest"           "1"
 
         // Abilities
         //----------------------------------------------------------------
@@ -66,6 +82,7 @@
         "Ability2"                  ""
         "Ability3"                  ""
         "Ability4"                  ""
+
 
         // Armor
         //----------------------------------------------------------------
@@ -156,6 +173,9 @@
         "VisionDaytimeRange"        "0"
         "VisionNighttimeRange"      "0"
         "HasInventory"              "0"
+        "WakesNeutrals"             "0"
+        "ImmuneToOmnislash"         "1"
+        "ImmuneToInfest"            "1"
     }
 
     "npc_dota_techies_custom_remote_mine"
@@ -168,6 +188,10 @@
         "SelectionGroup"                "Techies_RemoteMines"
         "BoundsHullName"                "DOTA_HULL_SIZE_SMALL"
         "IgnoreAddSummonedToSelection"  "1"
+        "AutoAttacksByDefault"          "0"
+        "IsSummoned"                    "0"
+        "CanBeDominated"                "0"
+        "IsAncient"                     "1"
 
         "Ability1"                      "custom_techies_remote_mine_self_detonate"
         "Ability2"                      ""
@@ -202,5 +226,9 @@
 
         "TeamName"                      "DOTA_TEAM_NEUTRALS"
         "UnitRelationshipClass"         "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_WARD"
+        "HasInventory"                  "0"
+        "WakesNeutrals"                 "0"
+        "ImmuneToOmnislash"             "1"
+        "ImmuneToInfest"                "1"
     }
 }

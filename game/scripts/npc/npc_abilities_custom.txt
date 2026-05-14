@@ -11,7 +11,7 @@
         "ScriptFile"                    "abilities/custom_techies_land_mines"
         "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
         "AbilityUnitDamageType"         "DAMAGE_TYPE_MAGICAL"
-        "SpellImmunityType"             "SPELL_IMMUNITY_ENEMIES_NO"
+        "SpellImmunityType"             "SPELL_IMMUNITY_ENEMIES_YES"
         "AbilitySound"                  "Hero_Techies.RemoteMine.Plant"
         "AbilityTextureName"            "techies_land_mines"
         "HasScepterUpgrade"             "1"
@@ -19,6 +19,7 @@
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "110 130 150 170"
         "AbilityCharges"                "3"
+        "AbilityProcsMagicStick"        "1"
         "AbilityValues"
         {
             "damage"                    "200 400 600 800"
@@ -50,7 +51,8 @@
         "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
         "AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_ENEMY"
         "SpellImmunityType"     "SPELL_IMMUNITY_ENEMIES_NO"
-        "SpellDispellableType"  "SPELL_DISPELLABLE_YES"
+        "SpellDispellableType"  "SPELL_DISPELLABLE_YES_STRONG"
+        "AbilityProcsMagicStick" "1"
         "HasScepterUpgrade"     "1"
         "AbilityCastPoint"      "1.0"
         "AbilityCooldown"       "20 16 13 10"
@@ -83,6 +85,7 @@
         "AbilityTextureName"    "techies_suicide_custom"
         "AbilityCastPoint"      "1.0"
         "AbilityManaCost"       "100 125 150 175"
+        "AbilityProcsMagicStick"        "1"
         "HasShardUpgrade"       "1"
         "AbilityValues"
         {
@@ -125,6 +128,7 @@
         "AbilityManaCost"       "0"
         "HasScepterUpgrade"     "1"
         "MaxLevel"              "1"
+        "AbilityProcsMagicStick"        "0"
 
         "AbilityValues"
         {
@@ -147,6 +151,7 @@
         "AbilityCooldown"               "1.0"
         "AbilityManaCost"               "0"
         "MaxLevel"                      "1"
+        "AbilityProcsMagicStick"        "0"
 
         "AbilityValues"
         {
@@ -171,6 +176,7 @@
         "AbilityManaCost"               "120 180 240"
         "MaxLevel"                      "3"
         "HasScepterUpgrade"             "1"
+        "AbilityProcsMagicStick"        "1"
 
         "AbilityValues"
         {
@@ -204,6 +210,7 @@
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "0"
         "MaxLevel"                      "1"
+        "AbilityProcsMagicStick"        "0"
     }
 
     "special_bonus_unique_techies_10_l"

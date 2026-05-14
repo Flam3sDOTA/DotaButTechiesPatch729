@@ -2,6 +2,7 @@ modifier_custom_techies_remote_mine = class({})
 
 function modifier_custom_techies_remote_mine:IsHidden()  return true  end
 function modifier_custom_techies_remote_mine:IsPurgable() return false end
+function modifier_custom_techies_remote_mine:IsDebuff() return false end
 
 function modifier_custom_techies_remote_mine:OnCreated()
     if not IsServer() then return end
@@ -80,6 +81,8 @@ function modifier_custom_techies_remote_mine:CheckState()
         [MODIFIER_STATE_MAGIC_IMMUNE]                = true,
         [MODIFIER_STATE_INVISIBLE]                   = self.faded,
         [MODIFIER_STATE_LOW_ATTACK_PRIORITY]         = true,
+        [MODIFIER_STATE_DEBUFF_IMMUNE]               = true,
+        [MODIFIER_STATE_UNTARGETABLE]                = true,
     }
 end
 
@@ -89,16 +92,11 @@ function modifier_custom_techies_remote_mine:DeclareFunctions()
         MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL,
         MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE,
         MODIFIER_EVENT_ON_ATTACK_LANDED,
+        MODIFIER_PROPERTY_DISABLE_HEALING,
+        MODIFIER_PROPERTY_AVOID_SPELL,
+        MODIFIER_PROPERTY_DODGE_PROJECTILE,
     }
 end
-
-function modifier_custom_techies_remote_mine:OnAttackLanded(keys)
-    if not IsServer() then return end
-    if keys.target == self.parent then
-        self.parent:Kill(self.ability, keys.attacker)
-    end
-end
-
 
 function modifier_custom_techies_remote_mine:SetRooted(bValue)
     self.bRootEnabled = bValue
@@ -107,3 +105,14 @@ end
 function modifier_custom_techies_remote_mine:GetAbsoluteNoDamageMagical()  return 1 end
 function modifier_custom_techies_remote_mine:GetAbsoluteNoDamagePhysical() return 1 end
 function modifier_custom_techies_remote_mine:GetAbsoluteNoDamagePure()     return 1 end
+function modifier_custom_techies_remote_mine:GetDisableHealing()           return 1 end
+function modifier_custom_techies_remote_mine:GetModifierAvoidSpell()       return 1 end
+function modifier_custom_techies_remote_mine:GetModifierDodgeProjectile()  return 1 end
+
+
+function modifier_custom_techies_remote_mine:OnAttackLanded(keys)
+    if not IsServer() then return end
+    if keys.target == self.parent then
+        self.parent:Kill(self.ability, keys.attacker)
+    end
+end

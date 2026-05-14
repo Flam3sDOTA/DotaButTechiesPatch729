@@ -65,6 +65,12 @@ g_ParticlePrecache =
 	"particles/generic_gameplay/generic_silenced.vpcf",
 	"particles/generic_gameplay/generic_stunned.vpcf",
 	"particles/units/heroes/hero_techies/techies_stasis_trap_explode.vpcf",
+	"particles/econ/events/ti9/shovel_dig.vpcf",
+	"particles/econ/events/ti9/shovel_end_burst.vpcf",
+	"particles/items8_fx/foragers_kit_buff_mana.vpcf",
+	"particles/items8_fx/foragers_kit_buff_healing.vpcf",
+	"particles/items8_fx/foragers_kit_buff_stats.vpcf",
+	"particles/items8_fx/foragers_kit_tree_aura.vpcf",
 }
 
 g_UnitPrecache =
@@ -239,6 +245,18 @@ g_UnitPrecache =
 g_ParticleFolderPrecache =
 {
 	"particles/units/heroes/hero_techies",
+	"particles/generic_gameplay",
+	"particles/generic_hero_status",
+	"particles/items_fx",
+	"particles/items2_fx",
+	"particles/items3_fx",
+	"particles/items4_fx",
+	"particles/items5_fx",
+	"particles/items6_fx",
+	"particles/items7_fx",
+	"particles/items8_fx",
+	"particles/items_4fx",
+	"particles/neutral_fx",
 }
 
 g_SoundPrecache =

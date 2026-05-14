@@ -30,3 +30,7 @@ function custom_techies_minefield_sign:OnSpellStart()
 
     TechiesSign[pid] = sign
 end
+
+function custom_techies_minefield_sign:ProcsMagicStick()
+	return false
+end

@@ -75,3 +75,7 @@ function custom_techies_suicide12:LandingEffect(landing_pos)
         end
     end
 end
+
+function custom_techies_suicide12:ProcsMagicStick()
+	return true
+end

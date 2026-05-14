@@ -23,3 +23,8 @@ function custom_techies_stasis_trap:OnSpellStart()
     end
     EmitSoundOn("Hero_Techies.StasisTrap.Plant", trap)
 end
+
+
+function custom_techies_stasis_trap:ProcsMagicStick()
+	return true
+end

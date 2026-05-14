@@ -22,3 +22,7 @@ function custom_techies_land_mines:OnSpellStart()
     end
     EmitSoundOn("Hero_Techies.RemoteMine.Plant", mine)
 end
+
+function custom_techies_land_mines:ProcsMagicStick()
+	return true
+end
