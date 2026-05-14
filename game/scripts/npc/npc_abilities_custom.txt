@@ -205,7 +205,7 @@
         "BaseClass"                     "ability_lua"
         "ScriptFile"                    "abilities/custom_techies_remote_mine_self_detonate"
         "AbilityTextureName"            "techies_detonate_custom"
-        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_UNRESTRICTED"
         "AbilityCastPoint"              "0"
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "0"

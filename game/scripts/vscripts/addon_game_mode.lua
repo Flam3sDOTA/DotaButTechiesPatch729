@@ -94,6 +94,7 @@ function SlacksTechies:InitGameMode()
 	GameMode:SetFreeCourierModeEnabled(true)
 	GameMode:SetUseTurboCouriers(false)
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
+	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
 end
 
 function SlacksTechies:OnNPCSpawned(event)
@@ -113,4 +114,27 @@ function SlacksTechies:OnNPCSpawned(event)
 			end
 		end)
 	end
+end
+
+function SlacksTechies:OnDetonateSelectedMines(event)
+    DeepPrintTable(event)
+    
+    local pid = event.PlayerID
+    if not event.entities then 
+        return 
+    end
+    
+    local count = 0
+    for k, entindex in pairs(event.entities) do
+        count = count + 1
+        local mine = EntIndexToHScript(entindex)
+        if mine and not mine:IsNull() then
+            if mine:GetUnitName() == "npc_dota_techies_custom_remote_mine" and mine:GetPlayerOwnerID() == pid then
+                local mod = mine:FindModifierByName("modifier_custom_techies_remote_mine")
+                if mod then 
+                    mod:Detonate() 
+                end
+            end
+        end
+    end
 end
