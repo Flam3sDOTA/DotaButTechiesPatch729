@@ -5,6 +5,9 @@ LinkLuaModifier("modifier_custom_techies_stasis_trap_root", "modifiers/modifier_
 function modifier_custom_techies_stasis_trap_deploy:IsHidden()   return true  end
 function modifier_custom_techies_stasis_trap_deploy:IsPurgable()  return false end
 function modifier_custom_techies_stasis_trap_deploy:IsDebuff() return false end
+function modifier_custom_techies_stasis_trap_deploy:GetPriority()
+  return MODIFIER_PRIORITY_SUPER_ULTRA + 10000
+end
 
 function modifier_custom_techies_stasis_trap_deploy:OnCreated()
     if not IsServer() then return end

@@ -10,6 +10,7 @@ function custom_techies_remote_mines:OnSpellStart()
     local caster = self:GetCaster()
     local point  = self:GetCursorPosition()
     if not caster or not point then return end
+    
     local mine = CreateUnitByName("npc_dota_techies_custom_remote_mine", point, true, caster, caster, caster:GetTeamNumber())
     mine:SetControllableByPlayer(caster:GetPlayerID(), true)
     local remote_modifier = mine:AddNewModifier(caster, self, "modifier_custom_techies_remote_mine", {})

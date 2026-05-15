@@ -2,6 +2,9 @@ modifier_custom_techies_minefield_sign = class({})
 
 function modifier_custom_techies_minefield_sign:IsHidden()  return true  end
 function modifier_custom_techies_minefield_sign:IsPurgable() return false end
+function modifier_custom_techies_minefield_sign:GetPriority()
+  return MODIFIER_PRIORITY_SUPER_ULTRA + 10000
+end
 
 function modifier_custom_techies_minefield_sign:CheckState()
     return {

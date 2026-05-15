@@ -3,6 +3,9 @@ modifier_custom_techies_remote_mine = class({})
 function modifier_custom_techies_remote_mine:IsHidden()  return true  end
 function modifier_custom_techies_remote_mine:IsPurgable() return false end
 function modifier_custom_techies_remote_mine:IsDebuff() return false end
+function modifier_custom_techies_remote_mine:GetPriority()
+  return MODIFIER_PRIORITY_SUPER_ULTRA + 10000
+end
 
 function modifier_custom_techies_remote_mine:OnCreated()
     if not IsServer() then return end
@@ -108,7 +111,6 @@ function modifier_custom_techies_remote_mine:GetAbsoluteNoDamagePure()     retur
 function modifier_custom_techies_remote_mine:GetDisableHealing()           return 1 end
 function modifier_custom_techies_remote_mine:GetModifierAvoidSpell()       return 1 end
 function modifier_custom_techies_remote_mine:GetModifierDodgeProjectile()  return 1 end
-
 
 function modifier_custom_techies_remote_mine:OnAttackLanded(keys)
     if not IsServer() then return end

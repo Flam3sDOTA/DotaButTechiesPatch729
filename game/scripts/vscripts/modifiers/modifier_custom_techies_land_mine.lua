@@ -3,6 +3,9 @@ modifier_custom_techies_land_mine = class({})
 function modifier_custom_techies_land_mine:IsHidden() return true end
 function modifier_custom_techies_land_mine:IsPurgable() return false end
 function modifier_custom_techies_land_mine:IsDebuff() return false end
+function modifier_custom_techies_land_mine:GetPriority()
+  return MODIFIER_PRIORITY_SUPER_ULTRA + 10000
+end
 
 function modifier_custom_techies_land_mine:OnCreated(kv)
     if not IsServer() then return end
