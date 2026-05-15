@@ -140,6 +140,7 @@ g_ParticlePrecache =
 	"particles/items8_fx/foragers_kit_buff_healing.vpcf",
 	"particles/items8_fx/foragers_kit_buff_stats.vpcf",
 	"particles/items8_fx/foragers_kit_tree_aura.vpcf",
+	"particles/econ/creeps/roshan/roshan_cosmic/roshan_cosmic_ambient.vpcf",
 }
 
 g_UnitPrecache =
