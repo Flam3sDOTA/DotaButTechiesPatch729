@@ -183,7 +183,7 @@
         {
             "radius"                    "425"
             "duration"                  "600"
-            "detonation_delay"          "0.25"
+            "detonation_delay"          "0"
             "fade_time"                 "2.0"
             "damage"
             {
