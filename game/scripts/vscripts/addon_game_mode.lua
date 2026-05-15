@@ -112,6 +112,9 @@ function SlacksTechies:OnNPCSpawned(event)
 			if unit and not unit:IsNull() then
 				local sign = unit:FindAbilityByName("custom_techies_minefield_sign")
 				if sign and sign:GetLevel() < 1 then sign:SetLevel(1) end
+
+				local innate = unit:FindAbilityByName("custom_techies_mana_innate")
+				if innate and innate:GetLevel() < 1 then innate:SetLevel(1) end
 			end
 		end)
 	end

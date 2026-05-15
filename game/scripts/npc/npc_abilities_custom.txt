@@ -245,4 +245,19 @@
             "value"                 "60"
         }
     }
+
+    "custom_techies_mana_innate"
+    {
+        "BaseClass"                 "ability_lua"
+        "ScriptFile"                "abilities/custom_techies_mana_innate"
+        "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_INNATE_UI | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+        "MaxLevel"                  "1"
+        "Innate"                    "1"
+        
+        "AbilityValues"
+        {
+            "base_pct"      "0.1"
+            "per_level_pct" "0.01"
+        }
+    }
 }

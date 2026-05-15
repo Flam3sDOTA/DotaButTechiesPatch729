@@ -10,7 +10,7 @@
         "Ability4"                      "custom_techies_focused_detonate"
         "Ability5"                      "custom_techies_minefield_sign"
         "Ability6"                      "custom_techies_remote_mines"
-        "Ability7"                      ""
+        "Ability7"                      "custom_techies_mana_innate"
         "Ability8"                      ""
 		"Ability9"                      ""
         "Ability10"                     "special_bonus_magic_resistance_20"
