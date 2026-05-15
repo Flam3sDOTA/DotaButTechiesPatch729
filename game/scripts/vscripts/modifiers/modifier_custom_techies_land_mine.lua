@@ -126,7 +126,6 @@ function modifier_custom_techies_land_mine:CheckState()
         [MODIFIER_STATE_INVISIBLE]                   = not self.visible_to_enemies,
         [MODIFIER_STATE_LOW_ATTACK_PRIORITY]         = true,
         [MODIFIER_STATE_DEBUFF_IMMUNE]               = true,
-        [MODIFIER_STATE_UNTARGETABLE]                = true,
     }
 end
 
@@ -142,7 +141,6 @@ function modifier_custom_techies_land_mine:DeclareFunctions()
         MODIFIER_EVENT_ON_ATTACK_LANDED,
         MODIFIER_PROPERTY_DISABLE_HEALING,
         MODIFIER_PROPERTY_AVOID_SPELL,
-        MODIFIER_PROPERTY_DODGE_PROJECTILE,
     }
 end
 
@@ -151,7 +149,6 @@ function modifier_custom_techies_land_mine:GetAbsoluteNoDamagePhysical() return 
 function modifier_custom_techies_land_mine:GetAbsoluteNoDamagePure()     return 1 end
 function modifier_custom_techies_land_mine:GetDisableHealing()           return 1 end
 function modifier_custom_techies_land_mine:GetModifierAvoidSpell()       return 1 end
-function modifier_custom_techies_land_mine:GetModifierDodgeProjectile()  return 1 end
 
 function modifier_custom_techies_land_mine:OnAttackLanded(keys)
     if not IsServer() then return end

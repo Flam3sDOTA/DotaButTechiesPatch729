@@ -101,7 +101,6 @@ function SlacksTechies:InitGameMode()
 
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
 	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
-	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(SlacksTechies, "FilterExecuteOrder"), self)
 end
 
 function SlacksTechies:OnNPCSpawned(event)
@@ -147,51 +146,4 @@ function SlacksTechies:OnDetonateSelectedMines(event)
             end
         end
     end
-end
-
-function SlacksTechies:FilterExecuteOrder(event)
-    if event.order_type ~= DOTA_UNIT_ORDER_CAST_POSITION then return true end
-    
-    local ability = event.entindex_ability and event.entindex_ability ~= 0 and EntIndexToHScript(event.entindex_ability) or nil
-    if not ability or ability:GetAbilityName() ~= "item_tpscroll" then return true end
-    
-    local MINE_NAMES = {
-        ["npc_dota_techies_land_mine_custom"]   = true,
-        ["npc_dota_techies_stasis_trap"]        = true,
-        ["npc_dota_techies_custom_remote_mine"] = true,
-        ["npc_dota_techies_custom_sign"]        = true,
-    }
-    
-    local pos = Vector(event.position_x, event.position_y, event.position_z)
-    local caster_unit = event.units and event.units["0"] and EntIndexToHScript(event.units["0"]) or nil
-    if not caster_unit then return true end
-    local team = caster_unit:GetTeamNumber()
-    
-    local friendlies = FindUnitsInRadius(
-        team, pos, nil, 25000,
-        DOTA_UNIT_TARGET_TEAM_FRIENDLY,
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC + DOTA_UNIT_TARGET_OTHER + DOTA_UNIT_TARGET_BUILDING,
-        DOTA_UNIT_TARGET_FLAG_INVULNERABLE,
-        FIND_CLOSEST, false)
-    
-    for _, u in pairs(friendlies) do
-        if u and not u:IsNull() and u ~= caster_unit then
-            if MINE_NAMES[u:GetUnitName()] then
-                local buildings = FindUnitsInRadius(
-                    team, pos, nil, 900,
-                    DOTA_UNIT_TARGET_TEAM_FRIENDLY,
-                    DOTA_UNIT_TARGET_BUILDING,
-                    DOTA_UNIT_TARGET_FLAG_INVULNERABLE,
-                    FIND_ANY_ORDER, false)
-                if #buildings > 0 then
-                    return true
-                end
-                return false
-            else
-                break
-            end
-        end
-    end
-    
-    return true
 end

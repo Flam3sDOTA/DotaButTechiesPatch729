@@ -85,7 +85,6 @@ function modifier_custom_techies_remote_mine:CheckState()
         [MODIFIER_STATE_INVISIBLE]                   = self.faded,
         [MODIFIER_STATE_LOW_ATTACK_PRIORITY]         = true,
         [MODIFIER_STATE_DEBUFF_IMMUNE]               = true,
-        [MODIFIER_STATE_UNTARGETABLE]                = true,
     }
 end
 
@@ -97,7 +96,6 @@ function modifier_custom_techies_remote_mine:DeclareFunctions()
         MODIFIER_EVENT_ON_ATTACK_LANDED,
         MODIFIER_PROPERTY_DISABLE_HEALING,
         MODIFIER_PROPERTY_AVOID_SPELL,
-        MODIFIER_PROPERTY_DODGE_PROJECTILE,
     }
 end
 
@@ -110,7 +108,6 @@ function modifier_custom_techies_remote_mine:GetAbsoluteNoDamagePhysical() retur
 function modifier_custom_techies_remote_mine:GetAbsoluteNoDamagePure()     return 1 end
 function modifier_custom_techies_remote_mine:GetDisableHealing()           return 1 end
 function modifier_custom_techies_remote_mine:GetModifierAvoidSpell()       return 1 end
-function modifier_custom_techies_remote_mine:GetModifierDodgeProjectile()  return 1 end
 
 function modifier_custom_techies_remote_mine:OnAttackLanded(keys)
     if not IsServer() then return end
