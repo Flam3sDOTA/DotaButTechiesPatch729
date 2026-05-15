@@ -120,6 +120,7 @@ g_ModelPrecache =
 	"models/items/techies/techies_ti9_immortal_prox_mine/techies_ti9_immortal_prox_mine.vmdl",
 	"models/heroes/techies/techies_sign.vmdl",
 	"models/items/wards/chrysalis_ward/chrysalis_ward.vmdl",
+	"models/creeps/roshan_cosmic/roshan_cosmic.vmdl",
 }
 
 g_ParticlePrecache =

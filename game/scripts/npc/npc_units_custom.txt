@@ -231,4 +231,9 @@
         "ImmuneToOmnislash"             "1"
         "ImmuneToInfest"                "1"
     }
+
+    "npc_dota_roshan"
+    { 
+        "Model"                         "models/creeps/roshan_cosmic/roshan_cosmic.vmdl"
+    }
 }
