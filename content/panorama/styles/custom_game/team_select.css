@@ -204,9 +204,10 @@
 
 #UnassignedPlayerPanel
 {
-    width: 250px;
+    width: 220px;
     height: 45%;
     flow-children: down;
+    margin-left: 20px;
 }
 
 #UnassignedPlayersButton
@@ -214,7 +215,7 @@
     flow-children: down;
     height: fill-parent-flow(1);
     max-height: 100%;
-    width: 250px;
+    width: 220px;
     background-color: gradient( linear, 100% 0%, 100% 100%, from( #1a0f08cc ), color-stop( 0.05, #22161099 ), color-stop( 0.7, #1a100899 ), to( #140a04cc ) );
     border: 1px solid #5c3a1466;
     border-top: 1px solid #8a5a2488;

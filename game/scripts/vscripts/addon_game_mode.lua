@@ -87,12 +87,19 @@ function SlacksTechies:InitGameMode()
 
 	GameRules:SetSameHeroSelectionEnabled(false)
 	GameRules:SetShowcaseTime(0)
+	GameRules:SetCustomGameAllowMusicAtGameStart(false)
+	GameRules:SetCustomGameAllowBattleMusic(false)
+	GameRules:SetCustomGameAllowHeroPickMusic(false)
 
 	local GameMode = GameRules:GetGameModeEntity()
 	GameMode:SetUseDefaultDOTARuneSpawnLogic(true)
 	GameMode:SetTowerBackdoorProtectionEnabled(true)
 	GameMode:SetFreeCourierModeEnabled(true)
 	GameMode:SetUseTurboCouriers(false)
+	GameMode:DisableHudFlip(true)
+	GameMode:SetKillingSpreeAnnouncerDisabled(true)
+
+
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
 	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
 	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(SlacksTechies, "FilterExecuteOrder"), self)

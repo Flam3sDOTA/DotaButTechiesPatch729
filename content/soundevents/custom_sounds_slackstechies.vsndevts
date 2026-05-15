@@ -1,0 +1,36 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+    SadViolinKill = 
+    {
+        type = "dota_src1_3d"
+        volume = 1.5
+        pitch_rand_min = -0.05
+        pitch_rand_max = 0.05
+        pitch = 1.0
+        soundlevel = 100.0
+        distance_max = 1500.0
+        event_type = 1.0
+        vsnd_files = 
+        [
+            "sounds/sadviolin.mp3",
+        ]
+        vsnd_duration = 0.735601
+    }
+
+    RickRoll = 
+    {
+        type = "dota_src1_3d"
+        volume = 1.5
+        pitch_rand_min = -0.05
+        pitch_rand_max = 0.05
+        pitch = 1.0
+        soundlevel = 100.0
+        distance_max = 1500.0
+        event_type = 1.0
+        vsnd_files = 
+        [
+            "sounds/rickroll.mp3",
+        ]
+        vsnd_duration = 0.735601
+    }
+}

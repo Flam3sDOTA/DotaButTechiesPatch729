@@ -343,4 +343,6 @@ g_SoundPrecache =
 	"soundevents/game_sounds_creeps.vsndevts",
 	"soundevents/voscripts/game_sounds_vo_techies.vsndevts",
 	"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts",
+	"soundevents/custom_sounds_slackstechies.vsndevts",
+	"soundevents/stickers/soundevents_stickers_season6.vsndevts",
 }
