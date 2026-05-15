@@ -99,7 +99,6 @@ function SlacksTechies:InitGameMode()
 	GameMode:DisableHudFlip(true)
 	GameMode:SetKillingSpreeAnnouncerDisabled(true)
 
-
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
 	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
 	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(SlacksTechies, "FilterExecuteOrder"), self)
