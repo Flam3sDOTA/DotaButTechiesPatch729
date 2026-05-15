@@ -13,7 +13,10 @@
 	DisableIK = false
 	EnablePickRules = false
 	EventGame = false
-	hero_picker = null
+	hero_picker = 
+	{
+		background_map = "backgrounds/dashboard_parallax_halloween"
+	}
 	HeroGuidesSupported = true
 	ForceDefaultGuide = true
 	MinimalPrecache = true

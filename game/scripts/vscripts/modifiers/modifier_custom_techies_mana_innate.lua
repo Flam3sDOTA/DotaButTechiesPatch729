@@ -9,7 +9,7 @@ local TAUNT_TEXTS = {
     "?",
     "First time?",
     "Imagine dying to Slacks' techies in 2026",
-    "Balanced BTW",
+    "OSFROG Balanced BTW",
     "Smells like skill issue",
     "0 map awareness",
     "I have reviewed the replay. The decision to walk forward at that moment was poor. The decision to not buy sentries was poorer.",
@@ -56,7 +56,7 @@ function modifier_custom_techies_mana_innate:OnDeath(event)
         Say(PlayerResource:GetPlayer(pid), text, false)
     else
         local sound = TAUNT_SOUNDS[RandomInt(1, #TAUNT_SOUNDS)]
-        Timers:CreateTimer(0.5, function()
+        Timers:CreateTimer(1, function()
             EmitGlobalSound(sound)
         end)
     end
