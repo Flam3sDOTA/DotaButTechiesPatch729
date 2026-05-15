@@ -121,6 +121,15 @@ g_ModelPrecache =
 	"models/heroes/techies/techies_sign.vmdl",
 	"models/items/wards/chrysalis_ward/chrysalis_ward.vmdl",
 	"models/creeps/roshan_cosmic/roshan_cosmic.vmdl",
+	"models/props_gameplay/gold_bag_2_bag.vmdl",
+	"models/props_gameplay/gold_bag.vmdl",
+	"models/props_gameplay/roshans_banner.vmdl",
+	"models/props_gameplay/ti9_consumable_banner.vmdl",
+	"models/props_teams/banner_guild_lvl1.vmdl",
+	"models/props_teams/banner_guild_lvl2.vmdl",
+	"models/props_teams/banner_guild_lvl3.vmdl",
+	"models/props_teams/banner_guild_lvl4.vmdl",
+	"models/props_teams/roshans_banner.vmdl",
 }
 
 g_ParticlePrecache =
