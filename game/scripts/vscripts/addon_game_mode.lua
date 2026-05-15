@@ -171,12 +171,21 @@ function SlacksTechies:FilterExecuteOrder(event)
         team, pos, nil, 25000,
         DOTA_UNIT_TARGET_TEAM_FRIENDLY,
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC + DOTA_UNIT_TARGET_OTHER + DOTA_UNIT_TARGET_BUILDING,
-        DOTA_UNIT_TARGET_FLAG_NONE,
+        DOTA_UNIT_TARGET_FLAG_INVULNERABLE,
         FIND_CLOSEST, false)
     
     for _, u in pairs(friendlies) do
         if u and not u:IsNull() and u ~= caster_unit then
             if MINE_NAMES[u:GetUnitName()] then
+                local buildings = FindUnitsInRadius(
+                    team, pos, nil, 900,
+                    DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+                    DOTA_UNIT_TARGET_BUILDING,
+                    DOTA_UNIT_TARGET_FLAG_INVULNERABLE,
+                    FIND_ANY_ORDER, false)
+                if #buildings > 0 then
+                    return true
+                end
                 return false
             else
                 break
