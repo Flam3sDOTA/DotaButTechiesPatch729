@@ -150,6 +150,14 @@ g_ParticlePrecache =
 	"particles/items8_fx/foragers_kit_buff_stats.vpcf",
 	"particles/items8_fx/foragers_kit_tree_aura.vpcf",
 	"particles/econ/creeps/roshan/roshan_cosmic/roshan_cosmic_ambient.vpcf",
+	"particles/econ/events/fall_2022/player/fall_2022_emblem_effect_player_base.vpcf",
+	"particles/fall_2022_emblem_gems_player_custom.vpcf",
+	"particles/fall_2022_emblem_effect_player_rock_custom.vpcf",
+	"particles/fall_2022_emblem_effect_player_gem_base_custom.vpcf",
+	"particles/fall_2022_emblem_effect_player_base_custom.vpcf",
+	"particles/fall_2022_emblem_effect_gem_base_03_player_custom.vpcf",
+	"particles/fall_2022_emblem_effect_gem_base_02_player_custom.vpcf",
+	"particles/econ/events/fall_2021/fall_2021_emblem_game_effect.vpcf",
 }
 
 g_UnitPrecache =
@@ -319,23 +327,6 @@ g_UnitPrecache =
 	"npc_dota_techies_stasis_trap",
 	"npc_dota_techies_custom_sign",
 	"npc_dota_techies_custom_remote_mine",
-}
-
-g_ParticleFolderPrecache =
-{
-	"particles/units/heroes/hero_techies",
-	"particles/generic_gameplay",
-	"particles/generic_hero_status",
-	"particles/items_fx",
-	"particles/items2_fx",
-	"particles/items3_fx",
-	"particles/items4_fx",
-	"particles/items5_fx",
-	"particles/items6_fx",
-	"particles/items7_fx",
-	"particles/items8_fx",
-	"particles/items_4fx",
-	"particles/neutral_fx",
 }
 
 g_SoundPrecache =

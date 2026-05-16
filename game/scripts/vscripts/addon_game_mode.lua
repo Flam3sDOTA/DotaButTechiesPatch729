@@ -4,6 +4,7 @@ end
 
 require("precache")
 require("timers")
+require("cosmetics_setup")
 
 function Precache( context )
 	for _,Item in pairs( g_ItemPrecache ) do
@@ -16,10 +17,6 @@ function Precache( context )
 
 	for _,Particle in pairs( g_ParticlePrecache ) do
 		PrecacheResource( "particle", Particle, context )
-	end
-
-	for _,ParticleFolder in pairs( g_ParticleFolderPrecache ) do
-		PrecacheResource( "particle_folder", Particle, context )
 	end
 
 	for _,Sound in pairs( g_SoundPrecache ) do
@@ -61,6 +58,18 @@ function Precache( context )
 	PrecacheResource("particle_folder", "particles/units/heroes/hero_pudge_cute", context)
 	PrecacheResource("particle_folder", "particles/base_attacks", context)
 	PrecacheResource("particle_folder", "particles/neutral_fx", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_techies", context)
+	PrecacheResource("particle_folder", "particles/generic_gameplay", context)
+	PrecacheResource("particle_folder", "particles/generic_hero_status", context)
+	PrecacheResource("particle_folder", "particles/items_fx", context)
+	PrecacheResource("particle_folder", "particles/items2_fx", context)
+	PrecacheResource("particle_folder", "particles/items3_fx", context)
+	PrecacheResource("particle_folder", "particles/items4_fx", context)
+	PrecacheResource("particle_folder", "particles/items5_fx", context)
+	PrecacheResource("particle_folder", "particles/items6_fx", context)
+	PrecacheResource("particle_folder", "particles/items7_fx", context)
+	PrecacheResource("particle_folder", "particles/items8_fx", context)
+	PrecacheResource("particle_folder", "particles/items_4fx", context)
 end
 
 function Activate()
@@ -100,6 +109,7 @@ function SlacksTechies:InitGameMode()
 	GameMode:SetKillingSpreeAnnouncerDisabled(true)
 
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
+	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap( SlacksTechies, 'OnGameRulesStateChange' ), self )
 	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
 end
 
@@ -146,4 +156,33 @@ function SlacksTechies:OnDetonateSelectedMines(event)
             end
         end
     end
+end
+
+function SlacksTechies:OnGameRulesStateChange()
+  local nNewState = GameRules:State_Get()
+  if nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
+    print( "DOTA_GAMERULES_STATE_PRE_GAME" )
+    SlacksTechies:OnGamePreGame()
+  elseif nNewState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+    print( "DOTA_GAMERULES_STATE_GAME_IN_PROGRESS" )
+  end
+end
+
+function SlacksTechies:OnGamePreGame()
+    Timers:CreateTimer(5, function()
+		for playerID = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
+			if PlayerResource:IsValidPlayerID(playerID) then
+				local sID = PlayerResource:GetSteamAccountID(playerID)
+				if sID then
+					local player = PlayerResource:GetPlayer(playerID)
+					local hero = player and player:GetAssignedHero()
+					if hero then
+						AssignCosmetics(sID, hero)
+						print( "[Cosmetics] AssignCosmetics" )
+					end
+				end
+			end
+		end
+		return
+	end)
 end
