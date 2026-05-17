@@ -61,7 +61,7 @@
         "AbilityValues"
         {
             "trigger_radius"    "400"
-            "stun_radius"       "400"
+            "stun_radius"       "600"
             "root_duration"     "2 3 4 5"
             "activation_delay"  "2.0"
             "AbilityCastRange"
@@ -103,8 +103,6 @@
                 "value"                 "1000"
                 "special_bonus_shard"   "+300"
             }
-
-
             "AbilityCooldown"
             {
                 "value"                                 "35"
