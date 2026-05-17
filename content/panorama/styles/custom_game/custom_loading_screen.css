@@ -11,8 +11,8 @@
 }
 
 #OptionList {
-    width: 430px;
-    height: 160px;
+    width: 460px;
+    height: 200px;
     flow-children: down;
     background-color: #1a100899;
     border: 1px solid #5c3a1455;
@@ -21,7 +21,7 @@
     transition-duration: 0.2s;
     align: center center;
     margin-right: 300px;
-    margin-top: 271px;
+    margin-top: 231px;
 }
 
 #OptionListGroup {
@@ -39,10 +39,10 @@
     white-space: nowrap;
     font-size: 20px;
     letter-spacing: 1px;
-    color: white;
+    color: #c8a84b;
     margin-top: 0px;
     horizontal-align: center;
-    font-family: Arial;
+    font-family: "Radiance";
     margin-top: 5px;
     transition-property: color;
     transition-duration: 0.2s;
@@ -71,7 +71,7 @@
     height: 2px;
     margin-left: 8px;
     margin-right: 8px;
-    background-color: gray;
+    background-color: #c8a84b;
     align: center center;
 }
 

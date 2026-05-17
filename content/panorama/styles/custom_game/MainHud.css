@@ -76,7 +76,7 @@
 #CustomButton2 {
     background-image: url("file://{images}/custom_game/icons/premium_sets.svg");
     background-size: 95%;
-    margin-top: 5px;
+    margin-top: 6px;
     margin-left: 196px;
     transition-duration: 0.3s;
     transition-property: wash-color;

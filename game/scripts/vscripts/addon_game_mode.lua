@@ -105,6 +105,8 @@ function SlacksTechies:InitGameMode()
 	SlacksTechies.AbilityVotes = SlacksTechies.AbilityVotes or {}
 	SlacksTechies.RedMines = SlacksTechies.RedMines or {}
 	SlacksTechies.Bots = SlacksTechies.Bots or {}
+	SlacksTechies.Turbo = SlacksTechies.Turbo or {}
+
 	MAX_TEAMS = 2   
 	PLAYER_COUNT = {}        
 	PLAYER_COUNT[DOTA_TEAM_GOODGUYS] = 5
@@ -151,7 +153,7 @@ function SlacksTechies:OnNPCSpawned(event)
 
 	if unit and not unit:IsNull() and unit:IsRealHero() and unit.bFirstSpawned == nil then
 		unit.bFirstSpawned = true
-		Timers:CreateTimer(0.1, function()
+		Timers:CreateTimer(0.3, function()
 			if unit and not unit:IsNull() then
 				if SlacksTechies.BlastOffSwapped then
 					if unit:HasAbility("custom_techies_suicide12") then
@@ -172,73 +174,83 @@ function SlacksTechies:OnNPCSpawned(event)
 				end
 
 				if SlacksTechies.FillBots then
-					SendToServerConsole('sv_cheats 1')
-					Convars:SetBool('dota_bot_mode', true)
-					Convars:SetBool('dota_bot_disable', false)
-					Convars:SetInt('dota_bot_set_difficulty', 4)
-					Convars:SetInt('dota_bot_practice_difficulty', 4)
-					GameRules:GetGameModeEntity():SetBotThinkingEnabled(true)
+					Timers:CreateTimer(1, function()
+						SendToServerConsole('sv_cheats 1')
+						Convars:SetBool('dota_bot_mode', true)
+						Convars:SetBool('dota_bot_disable', false)
+						Convars:SetInt('dota_bot_set_difficulty', 4)
+						Convars:SetInt('dota_bot_practice_difficulty', 4)
+						GameRules:GetGameModeEntity():SetBotThinkingEnabled(true)
 
-					local heroPool = {
-						"npc_dota_hero_abaddon",
-						"npc_dota_hero_lina",
-						"npc_dota_hero_axe",
-						"npc_dota_hero_bane",
-						"npc_dota_hero_bloodseeker",
-						"npc_dota_hero_crystal_maiden",
-						"npc_dota_hero_drow_ranger",
-						"npc_dota_hero_earthshaker",
-						"npc_dota_hero_juggernaut",
-						"npc_dota_hero_mirana",
-						"npc_dota_hero_nevermore",
-						"npc_dota_hero_morphling",
-						"npc_dota_hero_phantom_lancer",
-						"npc_dota_hero_puck",
-						"npc_dota_hero_pudge",
-						"npc_dota_hero_razor",
-						"npc_dota_hero_sand_king",
-						"npc_dota_hero_storm_spirit",
-						"npc_dota_hero_sven",
-						"npc_dota_hero_tiny"
-					}
+						local heroPool = {
+							"npc_dota_hero_abaddon",
+							"npc_dota_hero_lina",
+							"npc_dota_hero_axe",
+							"npc_dota_hero_bane",
+							"npc_dota_hero_bloodseeker",
+							"npc_dota_hero_crystal_maiden",
+							"npc_dota_hero_drow_ranger",
+							"npc_dota_hero_earthshaker",
+							"npc_dota_hero_juggernaut",
+							"npc_dota_hero_mirana",
+							"npc_dota_hero_nevermore",
+							"npc_dota_hero_morphling",
+							"npc_dota_hero_phantom_lancer",
+							"npc_dota_hero_puck",
+							"npc_dota_hero_pudge",
+							"npc_dota_hero_razor",
+							"npc_dota_hero_sand_king",
+							"npc_dota_hero_storm_spirit",
+							"npc_dota_hero_sven",
+							"npc_dota_hero_tiny"
+						}
 
-					local pickedHeroes = {}
-					for id = 0, 24 do
-						if PlayerResource:IsValidPlayerID(id) then
-							local heroName = PlayerResource:GetSelectedHeroName(id)
-							if heroName and heroName ~= "" then
-								pickedHeroes[heroName] = true
+						local pickedHeroes = {}
+						for id = 0, 24 do
+							if PlayerResource:IsValidPlayerID(id) then
+								local heroName = PlayerResource:GetSelectedHeroName(id)
+								if heroName and heroName ~= "" then
+									pickedHeroes[heroName] = true
+								end
 							end
 						end
-					end
 
-					local availableHeroes = {}
-					for _, heroName in ipairs(heroPool) do
-						if not pickedHeroes[heroName] then
-							table.insert(availableHeroes, heroName)
+						local availableHeroes = {}
+						for _, heroName in ipairs(heroPool) do
+							if not pickedHeroes[heroName] then
+								table.insert(availableHeroes, heroName)
+							end
 						end
-					end
 
-					for i = #availableHeroes, 2, -1 do
-						local j = RandomInt(1, i)
-						availableHeroes[i], availableHeroes[j] = availableHeroes[j], availableHeroes[i]
-					end
-
-					local radiantSlots = 5 - PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
-					for i = 1, radiantSlots do
-						if #availableHeroes > 0 then
-							local botHero = table.remove(availableHeroes, 1)
-							Tutorial:AddBot(botHero, '', 'hard', true)
+						for i = #availableHeroes, 2, -1 do
+							local j = RandomInt(1, i)
+							availableHeroes[i], availableHeroes[j] = availableHeroes[j], availableHeroes[i]
 						end
-					end
 
-					local direSlots = 5 - PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_BADGUYS)
-					for i = 1, direSlots do
-						if #availableHeroes > 0 then
-							local botHero = table.remove(availableHeroes, 1)
-							Tutorial:AddBot(botHero, '', 'hard', false)
+						local radiantSlots = 5 - PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
+						for i = 1, radiantSlots do
+							if #availableHeroes > 0 then
+								local botHero = table.remove(availableHeroes, 1)
+								Tutorial:AddBot(botHero, '', 'hard', true)
+							end
 						end
-					end
+
+						local direSlots = 5 - PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_BADGUYS)
+						for i = 1, direSlots do
+							if #availableHeroes > 0 then
+								local botHero = table.remove(availableHeroes, 1)
+								Tutorial:AddBot(botHero, '', 'hard', false)
+							end
+						end
+					end)
+				end
+
+				if SlacksTechies.TurboMode then
+					local GameMode = GameRules:GetGameModeEntity()
+					GameRules:SetFilterMoreGold(true)
+					GameMode:SetModifyGoldFilter(Dynamic_Wrap(SlacksTechies, "OnModifyGold"), self)
+    				GameMode:SetModifyExperienceFilter(Dynamic_Wrap(SlacksTechies, "OnModifyExperience"), self)
+					GameMode:SetBountyRunePickupFilter(Dynamic_Wrap(SlacksTechies, "OnBountyRunePickup"), self)
 				end
 
 				local sign = unit:FindAbilityByName("custom_techies_minefield_sign")
@@ -300,6 +312,7 @@ function SlacksTechies:OnGameRulesStateChange()
 	SlacksTechies:EvaluateAbilityVote()
 	SlacksTechies:EvaluateRedMinesVote()
 	SlacksTechies:EvaluateBots()
+	SlacksTechies:EvaluateTurbo()
   elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
     SlacksTechies:OnGamePreGame()
@@ -384,6 +397,19 @@ function SlacksTechies.OnVoteOptionClicked(eventSourceIndex, data)
             votes = yesVotes,
             playerCount = PlayerResource:GetPlayerCount()
         })
+    elseif option == "turbo_mode" then
+        SlacksTechies.Turbo[playerID] = value
+        local yesVotes = 0
+        for pID, wantsSwap in pairs(SlacksTechies.Turbo) do
+            if wantsSwap then
+                yesVotes = yesVotes + 1
+            end
+        end
+        CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+            option = option,
+            votes = yesVotes,
+            playerCount = PlayerResource:GetPlayerCount()
+        })
     end
 end
 
@@ -413,7 +439,7 @@ function SlacksTechies:EvaluateTechiesVote()
                     end
                 end
             end
-            GameRules:SetHeroSelectionTime(0)
+            GameRules:SetHeroSelectionTime(1)
         end)
     end
 end
@@ -482,4 +508,65 @@ function SlacksTechies:EvaluateBots()
     else
         SlacksTechies.FillBots = false
     end
+end
+
+function SlacksTechies:EvaluateTurbo()
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.Turbo then
+        for playerID, wantsSwap in pairs(SlacksTechies.Turbo) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsSwap then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        SlacksTechies.TurboMode = true
+    else
+        SlacksTechies.TurboMode = false
+    end
+end
+
+
+local TURBO_GOLD_REASONS = {
+    [DOTA_ModifyGold_GameTick] = true,       -- +2 GPM
+    [DOTA_ModifyGold_Building] = false,      
+    [DOTA_ModifyGold_HeroKill] = true,       -- Hero kills
+    [DOTA_ModifyGold_CreepKill] = true,      -- Lane creeps, Siege, Mega, and Summons
+    [DOTA_ModifyGold_RoshanKill] = false,    -- Roshan
+    [DOTA_ModifyGold_CourierKill] = true,    -- Couriers
+    [DOTA_ModifyGold_SharedGold] = false,     -- Team shared gold
+    [DOTA_ModifyGold_NeutralKill] = true,       
+    [DOTA_ModifyGold_AbilityGold] = true,    -- Hand of Midas, Track, etc.
+    [DOTA_ModifyGold_WardKill] = true,       -- Wards
+    [DOTA_ModifyGold_CourierKilledByThisPlayer] = true,
+}
+
+function SlacksTechies:OnModifyGold(event)
+    local playerID = event.player_id_const
+    if playerID == nil then return true end
+    local reason = event.reason_const
+
+    if TURBO_GOLD_REASONS[reason] then
+		event.gold = event.gold * 2
+	end
+    return true
+end
+
+function SlacksTechies:OnBountyRunePickup(event)
+    	event.gold_bounty = event.gold_bounty * 2
+    return true
+end
+
+function SlacksTechies:OnModifyExperience(event)
+    local playerID = event.player_id_const
+    if playerID == nil then return true end
+
+    event.experience = event.experience * 2
+    return true
 end
