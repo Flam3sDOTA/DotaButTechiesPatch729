@@ -136,6 +136,7 @@ function SlacksTechies:InitGameMode()
 	GameMode:SetUseTurboCouriers(false)
 	GameMode:DisableHudFlip(true)
 	GameMode:SetKillingSpreeAnnouncerDisabled(true)
+	GameMode:SetForcedHUDSkin( "the_international_2024" )
 
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap( SlacksTechies, 'OnGameRulesStateChange' ), self )
