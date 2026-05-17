@@ -11,8 +11,8 @@
 }
 
 #OptionList {
-    width: 300px;
-    height: 130px;
+    width: 430px;
+    height: 140px;
     flow-children: down;
     background-color: #1a100899;
     border: 1px solid #5c3a1455;
@@ -20,8 +20,8 @@
     transition-property: border-color, box-shadow, background-color;
     transition-duration: 0.2s;
     align: center center;
-    margin-right: 430px;
-    margin-top: 300px;
+    margin-right: 300px;
+    margin-top: 291px;
 }
 
 #OptionListGroup {
@@ -50,7 +50,7 @@
 
 #Advanced {
     text-transform: uppercase;
-    text-shadow: 2px 2px 2px black;
+
     white-space: nowrap;
     font-size: 15px;
     letter-spacing: 1px;
@@ -67,11 +67,12 @@
 }
 
 #OptionDivider {
-    width: 100%;
+    width: 40%;
     height: 2px;
     margin-left: 8px;
     margin-right: 8px;
     background-color: gray;
+    align: center center;
 }
 
 #Options {

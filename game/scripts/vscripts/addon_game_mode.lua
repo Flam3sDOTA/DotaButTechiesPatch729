@@ -80,6 +80,8 @@ end
 
 function SlacksTechies:InitGameMode()
 	SlacksTechies.TechiesVotes = SlacksTechies.TechiesVotes or {}
+	SlacksTechies.AbilityVotes = SlacksTechies.AbilityVotes or {}
+	SlacksTechies.RedMines = SlacksTechies.RedMines or {}
 	MAX_TEAMS = 2   
 	PLAYER_COUNT = {}        
 	PLAYER_COUNT[DOTA_TEAM_GOODGUYS] = 5
@@ -111,6 +113,7 @@ function SlacksTechies:InitGameMode()
 
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap( SlacksTechies, 'OnGameRulesStateChange' ), self )
+	ListenToGameEvent('entity_killed', Dynamic_Wrap(SlacksTechies, 'OnEntityKilled'), self)
 	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
 	CustomGameEventManager:RegisterListener("vote_option_clicked", Dynamic_Wrap(SlacksTechies, "OnVoteOptionClicked"))
 end
@@ -127,6 +130,24 @@ function SlacksTechies:OnNPCSpawned(event)
 		unit.bFirstSpawned = true
 		Timers:CreateTimer(0.1, function()
 			if unit and not unit:IsNull() then
+				if SlacksTechies.BlastOffSwapped then
+					if unit:HasAbility("custom_techies_suicide12") then
+						unit:RemoveAbility("custom_techies_suicide12")
+						unit:RemoveAbility("special_bonus_unique_techies_15_r")
+						unit:RemoveAbility("special_bonus_unique_techies_20_l")
+						local newAbility = unit:AddAbility("custom_techies_suicide_old")
+						local newTalent = unit:AddAbility("special_bonus_unique_techies_15_r_old")
+						local newTalent2 = unit:AddAbility("special_bonus_unique_techies_20_l_old")
+					end
+				end
+
+				if SlacksTechies.RedMinesSwapped then
+					if unit:HasAbility("custom_techies_land_mines") then
+						unit:RemoveAbility("custom_techies_land_mines")
+						unit:AddAbility("custom_techies_land_mines_old")
+					end
+				end
+
 				local sign = unit:FindAbilityByName("custom_techies_minefield_sign")
 				if sign and sign:GetLevel() < 1 then sign:SetLevel(1) end
 
@@ -135,6 +156,24 @@ function SlacksTechies:OnNPCSpawned(event)
 			end
 		end)
 	end
+end
+
+function SlacksTechies:OnEntityKilled(event)
+    local killed = EntIndexToHScript(event.entindex_killed)
+    if not killed or killed:IsNull() then return end
+    if not killed:IsRealHero() then return end
+
+    local inflictor = event.entindex_inflictor and EntIndexToHScript(event.entindex_inflictor)
+    if inflictor and inflictor.GetAbilityName and inflictor:GetAbilityName() == "custom_techies_suicide_old" then
+        if killed == inflictor:GetCaster() then
+            Timers:CreateTimer(0.1, function()
+                if killed and not killed:IsNull() then
+                    local rt = killed:GetRespawnTime()
+                    killed:SetTimeUntilRespawn(rt * 0.5)
+                end
+            end)
+        end
+    end
 end
 
 function SlacksTechies:OnDetonateSelectedMines(event)
@@ -164,6 +203,8 @@ function SlacksTechies:OnGameRulesStateChange()
   local nNewState = GameRules:State_Get()
   if nNewState == DOTA_GAMERULES_STATE_HERO_SELECTION then
 	SlacksTechies:EvaluateTechiesVote()
+	SlacksTechies:EvaluateAbilityVote()
+	SlacksTechies:EvaluateRedMinesVote()
   elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
     SlacksTechies:OnGamePreGame()
@@ -209,6 +250,32 @@ function SlacksTechies.OnVoteOptionClicked(eventSourceIndex, data)
             votes = yesVotes,
             playerCount = PlayerResource:GetPlayerCount()
         })
+    elseif option == "swap_blast_off" then
+        SlacksTechies.AbilityVotes[playerID] = value
+        local yesVotes = 0
+        for pID, wantsSwap in pairs(SlacksTechies.AbilityVotes) do
+            if wantsSwap then
+                yesVotes = yesVotes + 1
+            end
+        end
+        CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+            option = option,
+            votes = yesVotes,
+            playerCount = PlayerResource:GetPlayerCount()
+        })
+	elseif option == "swap_red_mines" then
+        SlacksTechies.RedMines[playerID] = value
+        local yesVotes = 0
+        for pID, wantsSwap in pairs(SlacksTechies.RedMines) do
+            if wantsSwap then
+                yesVotes = yesVotes + 1
+            end
+        end
+        CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+            option = option,
+            votes = yesVotes,
+            playerCount = PlayerResource:GetPlayerCount()
+        })
     end
 end
 
@@ -229,7 +296,6 @@ function SlacksTechies:EvaluateTechiesVote()
     
     if yesVotes > (activePlayers / 2) then
         GameRules:SetSameHeroSelectionEnabled(true)
-
         Timers:CreateTimer(0.1, function()
             for pID = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
                 if PlayerResource:IsValidPlayerID(pID) and PlayerResource:IsValidPlayer(pID) then
@@ -241,5 +307,49 @@ function SlacksTechies:EvaluateTechiesVote()
             end
             GameRules:SetHeroSelectionTime(0)
         end)
+    end
+end
+
+function SlacksTechies:EvaluateAbilityVote()
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.AbilityVotes then
+        for playerID, wantsSwap in pairs(SlacksTechies.AbilityVotes) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsSwap then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        SlacksTechies.BlastOffSwapped = true
+    else
+        SlacksTechies.BlastOffSwapped = false
+    end
+end
+
+function SlacksTechies:EvaluateRedMinesVote()
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.RedMines then
+        for playerID, wantsSwap in pairs(SlacksTechies.RedMines) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsSwap then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        SlacksTechies.RedMinesSwapped = true
+    else
+        SlacksTechies.RedMinesSwapped = false
     end
 end

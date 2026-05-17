@@ -14,6 +14,8 @@
 			<Panel id="OptionDivider" />
 				<Panel id="Options">
 					<ToggleButton id="force_techies" class="VoteToggle" text="Force Everyone Techies" onactivate="VoteOptionClicked('force_techies')" />
+					<ToggleButton id="swap_blast_off" class="VoteToggle" text="Old Suicide Squad, Attack!" onactivate="VoteOptionClicked('swap_blast_off')" />
+					<ToggleButton id="swap_red_mines" class="VoteToggle" text="Red Mines: Increased Damage, Can't Stack " onactivate="VoteOptionClicked('swap_red_mines')" />
 				</Panel>
 			</Panel>
 		</Panel>

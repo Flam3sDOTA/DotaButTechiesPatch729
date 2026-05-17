@@ -8,3 +8,4 @@ LinkLuaModifier("modifier_techies_blast_off_stun12",              "modifiers/mod
 LinkLuaModifier("modifier_techies_suicide_silence12",             "modifiers/modifier_techies_suicide_silence12",             LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_techies_suicide_leap12",                "modifiers/modifier_techies_suicide_leap12",                LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_custom_techies_mana_innate",            "modifiers/modifier_custom_techies_mana_innate",            LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_custom_techies_land_mine_old",          "modifiers/modifier_custom_techies_land_mine_old",          LUA_MODIFIER_MOTION_NONE)
