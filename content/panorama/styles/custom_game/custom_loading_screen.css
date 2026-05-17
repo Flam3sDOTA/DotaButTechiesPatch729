@@ -11,8 +11,8 @@
 }
 
 #OptionList {
-    width: 460px;
-    height: 200px;
+    width: 480px;
+    height: 225px;
     flow-children: down;
     background-color: #1a100899;
     border: 1px solid #5c3a1455;
@@ -20,8 +20,8 @@
     transition-property: border-color, box-shadow, background-color;
     transition-duration: 0.2s;
     align: center center;
-    margin-right: 300px;
-    margin-top: 231px;
+    margin-right: 290px;
+    margin-top: 211px;
 }
 
 #OptionListGroup {

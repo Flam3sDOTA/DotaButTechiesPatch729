@@ -18,6 +18,7 @@
 					<ToggleButton id="swap_red_mines" class="VoteToggle" text="Red Mines: Increased Damage, Can't Stack" onactivate="VoteOptionClicked('swap_red_mines')" />
 					<ToggleButton id="fill_bots" class="VoteToggle" text="Fill Empty Slots With Bots (Requires Cheats ON)" onactivate="VoteOptionClicked('fill_bots')" />
 					<ToggleButton id="turbo_mode" class="VoteToggle" text="Turbo XP + Gold" onactivate="VoteOptionClicked('turbo_mode')" />
+					<ToggleButton id="turbo_mode_full" class="VoteToggle" text="Full Turbo Mode" onactivate="VoteOptionClicked('turbo_mode_full')" />
 				</Panel>
 			</Panel>
 		</Panel>

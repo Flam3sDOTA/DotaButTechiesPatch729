@@ -106,6 +106,7 @@ function SlacksTechies:InitGameMode()
 	SlacksTechies.RedMines = SlacksTechies.RedMines or {}
 	SlacksTechies.Bots = SlacksTechies.Bots or {}
 	SlacksTechies.Turbo = SlacksTechies.Turbo or {}
+	SlacksTechies.FullTurbo = SlacksTechies.FullTurbo or {}
 
 	MAX_TEAMS = 2   
 	PLAYER_COUNT = {}        
@@ -145,6 +146,28 @@ end
 
 function SlacksTechies:OnNPCSpawned(event)
 	local unit = EntIndexToHScript(event.entindex)
+
+	if SlacksTechies.FullTurboMode and unit and not unit:IsNull() then
+		local TURBO_CREEP_STATS = {
+			["npc_dota_goodguys_siege_upgraded_mega"]            = { hp = 1870, dmgMin = 102, dmgMax = 124 },
+			["npc_dota_creep_goodguys_ranged_upgraded_mega"]     = { hp = 950,  dmgMin = 92,  dmgMax = 102 },
+			["npc_dota_creep_goodguys_melee_upgraded_mega"]      = { hp = 1400, dmgMin = 82,  dmgMax = 98  },
+			["npc_dota_creep_goodguys_flagbearer_upgraded_mega"] = { hp = 1400, dmgMin = 82,  dmgMax = 98  },
+			["npc_dota_badguys_siege_upgraded_mega"]             = { hp = 1870, dmgMin = 102, dmgMax = 124 },
+			["npc_dota_creep_badguys_ranged_upgraded_mega"]      = { hp = 950,  dmgMin = 92,  dmgMax = 102 },
+			["npc_dota_creep_badguys_melee_upgraded_mega"]       = { hp = 1400, dmgMin = 82,  dmgMax = 98  },
+			["npc_dota_creep_badguys_flagbearer_upgraded_mega"]  = { hp = 1400, dmgMin = 82,  dmgMax = 98  },
+		}
+		local stats = TURBO_CREEP_STATS[unit:GetUnitName()]
+		if stats then
+			Timers:CreateTimer(0.1, function()
+				unit:SetMaxHealth(stats.hp)
+				unit:SetHealth(stats.hp)
+				unit:SetBaseDamageMin(stats.dmgMin)
+				unit:SetBaseDamageMax(stats.dmgMax)
+			end)
+		end
+	end
 	
 	if unit and not unit:IsNull() and unit:GetUnitName() == "npc_dota_techies_custom_remote_mine" then
 		local remote = unit:FindAbilityByName("custom_techies_remote_mine_self_detonate")
@@ -245,14 +268,6 @@ function SlacksTechies:OnNPCSpawned(event)
 					end)
 				end
 
-				if SlacksTechies.TurboMode then
-					local GameMode = GameRules:GetGameModeEntity()
-					GameRules:SetFilterMoreGold(true)
-					GameMode:SetModifyGoldFilter(Dynamic_Wrap(SlacksTechies, "OnModifyGold"), self)
-    				GameMode:SetModifyExperienceFilter(Dynamic_Wrap(SlacksTechies, "OnModifyExperience"), self)
-					GameMode:SetBountyRunePickupFilter(Dynamic_Wrap(SlacksTechies, "OnBountyRunePickup"), self)
-				end
-
 				local sign = unit:FindAbilityByName("custom_techies_minefield_sign")
 				if sign and sign:GetLevel() < 1 then sign:SetLevel(1) end
 
@@ -313,6 +328,7 @@ function SlacksTechies:OnGameRulesStateChange()
 	SlacksTechies:EvaluateRedMinesVote()
 	SlacksTechies:EvaluateBots()
 	SlacksTechies:EvaluateTurbo()
+	SlacksTechies:EvaluateFullTurbo()
   elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
     SlacksTechies:OnGamePreGame()
@@ -322,7 +338,59 @@ function SlacksTechies:OnGameRulesStateChange()
 end
 
 function SlacksTechies:OnGamePreGame()
-    Timers:CreateTimer(5, function()
+	if SlacksTechies.FullTurboMode then
+		Timers:CreateTimer(0.1, function()
+			local TURBO_BUILDING_STATS = {
+				["npc_dota_goodguys_fort"] = { regen = 0 },
+				["npc_dota_badguys_fort"]  = { regen = 0 },
+				["npc_dota_goodguys_tower1_top"] = { hp = 1350, armor = 9 },
+				["npc_dota_goodguys_tower1_mid"] = { hp = 1350, armor = 9 },
+				["npc_dota_goodguys_tower1_bot"] = { hp = 1350, armor = 9 },
+				["npc_dota_badguys_tower1_top"]  = { hp = 1350, armor = 9 },
+				["npc_dota_badguys_tower1_mid"]  = { hp = 1350, armor = 9 },
+				["npc_dota_badguys_tower1_bot"]  = { hp = 1350, armor = 9 },
+				["npc_dota_goodguys_tower2_top"] = { hp = 2500, armor = 16 },
+				["npc_dota_goodguys_tower2_mid"] = { hp = 2500, armor = 16 },
+				["npc_dota_goodguys_tower2_bot"] = { hp = 2500, armor = 16 },
+				["npc_dota_badguys_tower2_top"]  = { hp = 2500, armor = 16 },
+				["npc_dota_badguys_tower2_mid"]  = { hp = 2500, armor = 16 },
+				["npc_dota_badguys_tower2_bot"]  = { hp = 2500, armor = 16 },
+				["npc_dota_goodguys_tower3_top"] = { hp = 2500, armor = 16 },
+				["npc_dota_goodguys_tower3_mid"] = { hp = 2500, armor = 16 },
+				["npc_dota_goodguys_tower3_bot"] = { hp = 2500, armor = 16 },
+				["npc_dota_badguys_tower3_top"]  = { hp = 2500, armor = 16 },
+				["npc_dota_badguys_tower3_mid"]  = { hp = 2500, armor = 16 },
+				["npc_dota_badguys_tower3_bot"]  = { hp = 2500, armor = 16 },
+				["npc_dota_goodguys_tower4"]     = { hp = 2600, armor = 21 },
+				["npc_dota_badguys_tower4"]      = { hp = 2600, armor = 21 },
+			}
+			
+			local allUnits = FindUnitsInRadius(
+				DOTA_TEAM_NEUTRALS,
+				Vector(0, 0, 0),
+				nil,
+				25000,
+				DOTA_UNIT_TARGET_TEAM_BOTH,
+				DOTA_UNIT_TARGET_ALL,
+				DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES + DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO,
+				FIND_ANY_ORDER,
+				false
+			)
+
+			for _, ent in ipairs(allUnits) do
+				if ent and not ent:IsNull() then
+					local stats = TURBO_BUILDING_STATS[ent:GetUnitName()]
+					if stats then
+						if stats.regen ~= nil then ent:SetBaseHealthRegen(stats.regen) end
+						if stats.hp then ent:SetMaxHealth(stats.hp) ent:SetHealth(stats.hp) end
+						if stats.armor then ent:SetPhysicalArmorBaseValue(stats.armor) end
+					end
+				end
+			end
+		end)
+	end
+
+    Timers:CreateTimer(4, function()
 		for playerID = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
 			if PlayerResource:IsValidPlayerID(playerID) then
 				local sID = PlayerResource:GetSteamAccountID(playerID)
@@ -401,6 +469,19 @@ function SlacksTechies.OnVoteOptionClicked(eventSourceIndex, data)
         SlacksTechies.Turbo[playerID] = value
         local yesVotes = 0
         for pID, wantsSwap in pairs(SlacksTechies.Turbo) do
+            if wantsSwap then
+                yesVotes = yesVotes + 1
+            end
+        end
+        CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+            option = option,
+            votes = yesVotes,
+            playerCount = PlayerResource:GetPlayerCount()
+        })
+    elseif option == "turbo_mode_full" then
+        SlacksTechies.FullTurbo[playerID] = value
+        local yesVotes = 0
+        for pID, wantsSwap in pairs(SlacksTechies.FullTurbo) do
             if wantsSwap then
                 yesVotes = yesVotes + 1
             end
@@ -527,11 +608,57 @@ function SlacksTechies:EvaluateTurbo()
     
     if yesVotes > (activePlayers / 2) then
         SlacksTechies.TurboMode = true
+		local GameMode = GameRules:GetGameModeEntity()
+		GameRules:SetFilterMoreGold(true)
+		GameMode:SetModifyGoldFilter(Dynamic_Wrap(SlacksTechies, "OnModifyGold"), self)
+		GameMode:SetModifyExperienceFilter(Dynamic_Wrap(SlacksTechies, "OnModifyExperience"), self)
+		GameMode:SetBountyRunePickupFilter(Dynamic_Wrap(SlacksTechies, "OnBountyRunePickup"), self)
     else
         SlacksTechies.TurboMode = false
     end
 end
 
+function SlacksTechies:EvaluateFullTurbo()
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.FullTurbo then
+        for playerID, wantsSwap in pairs(SlacksTechies.FullTurbo) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsSwap then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        SlacksTechies.FullTurboMode = true
+		local GameMode = GameRules:GetGameModeEntity()
+		GameRules:SetFilterMoreGold(true)
+		GameRules:SetUseUniversalShopMode(true)
+		GameMode:SetCanSellAnywhere(true)
+		GameMode:SetUseTurboCouriers(true)
+		GameMode:SetModifyGoldFilter(Dynamic_Wrap(SlacksTechies, "OnModifyGold"), self)
+		GameMode:SetModifyExperienceFilter(Dynamic_Wrap(SlacksTechies, "OnModifyExperience"), self)
+		GameMode:SetBountyRunePickupFilter(Dynamic_Wrap(SlacksTechies, "OnBountyRunePickup"), self)
+		ListenToGameEvent('dota_player_used_ability', Dynamic_Wrap(SlacksTechies, 'OnPlayerUsedAbility'), self)
+		Timers:CreateTimer(240, function()
+			-- Add a stock of Infused Raindrops at 1:30 
+			GameRules:SetItemStockCount(5, DOTA_TEAM_GOODGUYS, "item_infused_raindrop", -1)
+			GameRules:SetItemStockCount(5, DOTA_TEAM_BADGUYS, "item_infused_raindrop", -1)
+		end)
+
+		Timers:CreateTimer(600, function()
+			-- Add a stock of Aghanim Shard at 7:30 
+			GameRules:SetItemStockCount(5, DOTA_TEAM_GOODGUYS, "item_aghanims_shard", -1)
+			GameRules:SetItemStockCount(5, DOTA_TEAM_BADGUYS, "item_aghanims_shard", -1)
+		end)
+    else
+        SlacksTechies.FullTurboMode = false
+    end
+end
 
 local TURBO_GOLD_REASONS = {
     [DOTA_ModifyGold_GameTick] = true,       -- +2 GPM
@@ -555,6 +682,12 @@ function SlacksTechies:OnModifyGold(event)
     if TURBO_GOLD_REASONS[reason] then
 		event.gold = event.gold * 2
 	end
+
+	-- No gold loss on death
+    if reason == DOTA_ModifyGold_Death then
+        return false 
+    end
+
     return true
 end
 
@@ -569,4 +702,25 @@ function SlacksTechies:OnModifyExperience(event)
 
     event.experience = event.experience * 2
     return true
+end
+
+function SlacksTechies:OnPlayerUsedAbility(event)
+    local playerID = event.PlayerID
+    if playerID == nil then return end
+
+    local abilityName = event.abilityname
+    if abilityName ~= "item_tpscroll" and abilityName ~= "item_travel_boots" and abilityName ~= "item_travel_boots_2" then return end
+
+    local hero = PlayerResource:GetSelectedHeroEntity(playerID)
+    if not hero then return end
+
+    local item = hero:FindItemInInventory(abilityName)
+    if not item then return end
+
+    Timers:CreateTimer(0.03, function()
+        if item and IsValidEntity(item) then
+            item:EndCooldown()
+            item:StartCooldown(item:GetCooldown(item:GetLevel()) * 0.5)
+        end
+    end)
 end
