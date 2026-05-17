@@ -1,0 +1,10 @@
+"CustomEvents"
+{
+
+    "update_vote_label"
+    {
+        "option"            "string"
+        "votes"             "short"
+        "playerCount"       "short"
+    }
+}

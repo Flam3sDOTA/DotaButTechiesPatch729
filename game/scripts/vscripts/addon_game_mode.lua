@@ -79,6 +79,7 @@ function Activate()
 end
 
 function SlacksTechies:InitGameMode()
+	SlacksTechies.TechiesVotes = SlacksTechies.TechiesVotes or {}
 	MAX_TEAMS = 2   
 	PLAYER_COUNT = {}        
 	PLAYER_COUNT[DOTA_TEAM_GOODGUYS] = 5
@@ -111,6 +112,7 @@ function SlacksTechies:InitGameMode()
 	ListenToGameEvent("npc_spawned", Dynamic_Wrap(SlacksTechies, "OnNPCSpawned"), self)
 	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap( SlacksTechies, 'OnGameRulesStateChange' ), self )
 	CustomGameEventManager:RegisterListener("detonate_selected_mines", Dynamic_Wrap(SlacksTechies, "OnDetonateSelectedMines"))
+	CustomGameEventManager:RegisterListener("vote_option_clicked", Dynamic_Wrap(SlacksTechies, "OnVoteOptionClicked"))
 end
 
 function SlacksTechies:OnNPCSpawned(event)
@@ -160,7 +162,9 @@ end
 
 function SlacksTechies:OnGameRulesStateChange()
   local nNewState = GameRules:State_Get()
-  if nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
+  if nNewState == DOTA_GAMERULES_STATE_HERO_SELECTION then
+	SlacksTechies:EvaluateTechiesVote()
+  elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
     SlacksTechies:OnGamePreGame()
   elseif nNewState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
@@ -178,11 +182,64 @@ function SlacksTechies:OnGamePreGame()
 					local hero = player and player:GetAssignedHero()
 					if hero then
 						AssignCosmetics(sID, hero)
-						print( "[Cosmetics] AssignCosmetics" )
+						print( "[Cosmetics] Assigned Cosmetics" )
 					end
 				end
 			end
 		end
 		return
 	end)
+end
+
+function SlacksTechies.OnVoteOptionClicked(eventSourceIndex, data)
+    local playerID = data.playerID
+    local option = data.option
+    local value = (data.value == 1 or data.value == true)
+
+    if option == "force_techies" then
+        SlacksTechies.TechiesVotes[playerID] = value
+        local yesVotes = 0
+        for pID, wantsTechies in pairs(SlacksTechies.TechiesVotes) do
+            if wantsTechies then
+                yesVotes = yesVotes + 1
+            end
+        end
+        CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+            option = option,
+            votes = yesVotes,
+            playerCount = PlayerResource:GetPlayerCount()
+        })
+    end
+end
+
+function SlacksTechies:EvaluateTechiesVote()
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.TechiesVotes then
+        for playerID, wantsTechies in pairs(SlacksTechies.TechiesVotes) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsTechies then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        GameRules:SetSameHeroSelectionEnabled(true)
+
+        Timers:CreateTimer(0.1, function()
+            for pID = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
+                if PlayerResource:IsValidPlayerID(pID) and PlayerResource:IsValidPlayer(pID) then
+                    local player = PlayerResource:GetPlayer(pID)
+                    if player then
+                        player:SetSelectedHero("npc_dota_hero_techies")
+                    end
+                end
+            end
+            GameRules:SetHeroSelectionTime(0)
+        end)
+    end
 end

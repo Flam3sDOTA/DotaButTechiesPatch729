@@ -1,4 +1,4 @@
-.OverthrowLoadingRoot
+.LoadingScreenRoot
 {
     width: 100%;
     height: 100%;
@@ -8,4 +8,96 @@
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
 	background-size: 100% 100%;
+}
+
+#OptionList {
+    width: 300px;
+    height: 130px;
+    flow-children: down;
+    background-color: #1a100899;
+    border: 1px solid #5c3a1455;
+    border-radius: 3px;
+    transition-property: border-color, box-shadow, background-color;
+    transition-duration: 0.2s;
+    align: center center;
+    margin-right: 430px;
+    margin-top: 300px;
+}
+
+#OptionListGroup {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    vertical-align: middle;
+    border-radius: 8px;
+    flow-children: down;
+}
+
+#OptionTitle {
+    text-transform: uppercase;
+    text-shadow: 2px 2px 2px black;
+    white-space: nowrap;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: white;
+    margin-top: 0px;
+    horizontal-align: center;
+    font-family: Arial;
+    margin-top: 5px;
+    transition-property: color;
+    transition-duration: 0.2s;
+}
+
+#Advanced {
+    text-transform: uppercase;
+    text-shadow: 2px 2px 2px black;
+    white-space: nowrap;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: orange;
+    margin-top: 0px;
+    horizontal-align: right;
+    vertical-align: bottom;
+    transition-property: color;
+    transition-duration: 0.2s;
+}
+
+#Advanced:hover {
+    color: white;
+}
+
+#OptionDivider {
+    width: 100%;
+    height: 2px;
+    margin-left: 8px;
+    margin-right: 8px;
+    background-color: gray;
+}
+
+#Options {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    text-transform: uppercase;
+    flow-children: down;
+    margin-left: 5px;
+}
+
+.OptionsContainer {
+    flow-children: right;
+    width: 100%;
+}
+
+.OptionsContainer>Label {
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.OptionsContainer>DropDown {
+    max-width: 200px;
+    horizontal-align: right;
+}
+
+DropDownMenu {
+    max-width: 200px;
 }

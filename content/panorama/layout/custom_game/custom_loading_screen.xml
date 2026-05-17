@@ -3,6 +3,19 @@
 		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
 		<include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
 	</styles>
-	<Panel class="OverthrowLoadingRoot">
+	 <scripts>
+        <include src="file://{resources}/scripts/custom_game/custom_loading_screen.js" />
+    </scripts>
+	<Panel class="LoadingScreenRoot">
+		
+		<Panel id="OptionList">
+			<Panel id="OptionListGroup">
+			<Label id="OptionTitle" text="VOTE OPTIONS" />
+			<Panel id="OptionDivider" />
+				<Panel id="Options">
+					<ToggleButton id="force_techies" class="VoteToggle" text="Force Everyone Techies" onactivate="VoteOptionClicked('force_techies')" />
+				</Panel>
+			</Panel>
+		</Panel>
 	</Panel>
 </root>
