@@ -70,6 +70,28 @@ function Precache( context )
 	PrecacheResource("particle_folder", "particles/items7_fx", context)
 	PrecacheResource("particle_folder", "particles/items8_fx", context)
 	PrecacheResource("particle_folder", "particles/items_4fx", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_abaddon", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_axe", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_bane", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_bloodseeker", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_crystalmaiden", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_crystalmaiden_persona", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_drow", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_earthshaker", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_juggernaut", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_mirana", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_morphling", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_nevermore", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_phantom_lancer", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_puck", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_pudge", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_pudge_cute", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_razor", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_razor_reduced_flash", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_sandking", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_stormspirit", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_sven", context)
+	PrecacheResource("particle_folder", "particles/units/heroes/hero_tiny", context)
 end
 
 function Activate()
@@ -82,6 +104,7 @@ function SlacksTechies:InitGameMode()
 	SlacksTechies.TechiesVotes = SlacksTechies.TechiesVotes or {}
 	SlacksTechies.AbilityVotes = SlacksTechies.AbilityVotes or {}
 	SlacksTechies.RedMines = SlacksTechies.RedMines or {}
+	SlacksTechies.Bots = SlacksTechies.Bots or {}
 	MAX_TEAMS = 2   
 	PLAYER_COUNT = {}        
 	PLAYER_COUNT[DOTA_TEAM_GOODGUYS] = 5
@@ -148,6 +171,76 @@ function SlacksTechies:OnNPCSpawned(event)
 					end
 				end
 
+				if SlacksTechies.FillBots then
+					SendToServerConsole('sv_cheats 1')
+					Convars:SetBool('dota_bot_mode', true)
+					Convars:SetBool('dota_bot_disable', false)
+					Convars:SetInt('dota_bot_set_difficulty', 4)
+					Convars:SetInt('dota_bot_practice_difficulty', 4)
+					GameRules:GetGameModeEntity():SetBotThinkingEnabled(true)
+
+					local heroPool = {
+						"npc_dota_hero_abaddon",
+						"npc_dota_hero_lina",
+						"npc_dota_hero_axe",
+						"npc_dota_hero_bane",
+						"npc_dota_hero_bloodseeker",
+						"npc_dota_hero_crystal_maiden",
+						"npc_dota_hero_drow_ranger",
+						"npc_dota_hero_earthshaker",
+						"npc_dota_hero_juggernaut",
+						"npc_dota_hero_mirana",
+						"npc_dota_hero_nevermore",
+						"npc_dota_hero_morphling",
+						"npc_dota_hero_phantom_lancer",
+						"npc_dota_hero_puck",
+						"npc_dota_hero_pudge",
+						"npc_dota_hero_razor",
+						"npc_dota_hero_sand_king",
+						"npc_dota_hero_storm_spirit",
+						"npc_dota_hero_sven",
+						"npc_dota_hero_tiny"
+					}
+
+					local pickedHeroes = {}
+					for id = 0, 24 do
+						if PlayerResource:IsValidPlayerID(id) then
+							local heroName = PlayerResource:GetSelectedHeroName(id)
+							if heroName and heroName ~= "" then
+								pickedHeroes[heroName] = true
+							end
+						end
+					end
+
+					local availableHeroes = {}
+					for _, heroName in ipairs(heroPool) do
+						if not pickedHeroes[heroName] then
+							table.insert(availableHeroes, heroName)
+						end
+					end
+
+					for i = #availableHeroes, 2, -1 do
+						local j = RandomInt(1, i)
+						availableHeroes[i], availableHeroes[j] = availableHeroes[j], availableHeroes[i]
+					end
+
+					local radiantSlots = 5 - PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
+					for i = 1, radiantSlots do
+						if #availableHeroes > 0 then
+							local botHero = table.remove(availableHeroes, 1)
+							Tutorial:AddBot(botHero, '', 'hard', true)
+						end
+					end
+
+					local direSlots = 5 - PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_BADGUYS)
+					for i = 1, direSlots do
+						if #availableHeroes > 0 then
+							local botHero = table.remove(availableHeroes, 1)
+							Tutorial:AddBot(botHero, '', 'hard', false)
+						end
+					end
+				end
+
 				local sign = unit:FindAbilityByName("custom_techies_minefield_sign")
 				if sign and sign:GetLevel() < 1 then sign:SetLevel(1) end
 
@@ -202,9 +295,11 @@ end
 function SlacksTechies:OnGameRulesStateChange()
   local nNewState = GameRules:State_Get()
   if nNewState == DOTA_GAMERULES_STATE_HERO_SELECTION then
+	print( "DOTA_GAMERULES_STATE_HERO_SELECTION" )
 	SlacksTechies:EvaluateTechiesVote()
 	SlacksTechies:EvaluateAbilityVote()
 	SlacksTechies:EvaluateRedMinesVote()
+	SlacksTechies:EvaluateBots()
   elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
     SlacksTechies:OnGamePreGame()
@@ -267,6 +362,19 @@ function SlacksTechies.OnVoteOptionClicked(eventSourceIndex, data)
         SlacksTechies.RedMines[playerID] = value
         local yesVotes = 0
         for pID, wantsSwap in pairs(SlacksTechies.RedMines) do
+            if wantsSwap then
+                yesVotes = yesVotes + 1
+            end
+        end
+        CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+            option = option,
+            votes = yesVotes,
+            playerCount = PlayerResource:GetPlayerCount()
+        })
+    elseif option == "fill_bots" then
+        SlacksTechies.Bots[playerID] = value
+        local yesVotes = 0
+        for pID, wantsSwap in pairs(SlacksTechies.Bots) do
             if wantsSwap then
                 yesVotes = yesVotes + 1
             end
@@ -351,5 +459,27 @@ function SlacksTechies:EvaluateRedMinesVote()
         SlacksTechies.RedMinesSwapped = true
     else
         SlacksTechies.RedMinesSwapped = false
+    end
+end
+
+function SlacksTechies:EvaluateBots()
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.Bots then
+        for playerID, wantsSwap in pairs(SlacksTechies.Bots) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsSwap then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        SlacksTechies.FillBots = true
+    else
+        SlacksTechies.FillBots = false
     end
 end
