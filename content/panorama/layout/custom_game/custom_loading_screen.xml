@@ -13,10 +13,10 @@
 			<Label id="OptionTitle" text="VOTE OPTIONS" />
 			<Panel id="OptionDivider" />
 				<Panel id="Options">
-					<ToggleButton id="force_techies" class="VoteToggle" text="Force Everyone Techies" onactivate="VoteOptionClicked('force_techies')" />
+					<ToggleButton id="force_techies" class="VoteToggle" text="Force Everyone Techies (Bots Excluded)" onactivate="VoteOptionClicked('force_techies')" />
 					<ToggleButton id="swap_blast_off" class="VoteToggle" text="Old Suicide Squad, Attack!" onactivate="VoteOptionClicked('swap_blast_off')" />
 					<ToggleButton id="swap_red_mines" class="VoteToggle" text="Red Mines: Increased Damage, Can't Stack" onactivate="VoteOptionClicked('swap_red_mines')" />
-					<ToggleButton id="fill_bots" class="VoteToggle" text="Fill Empty Slots With Bots" onactivate="VoteOptionClicked('fill_bots')" />
+					<ToggleButton id="fill_bots" class="VoteToggle" text="Fill Empty Slots With Bots (Requires Cheats ON)" onactivate="VoteOptionClicked('fill_bots')" />
 					<ToggleButton id="turbo_mode" class="VoteToggle" text="Turbo XP + Gold" onactivate="VoteOptionClicked('turbo_mode')" />
 				</Panel>
 			</Panel>
