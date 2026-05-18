@@ -266,7 +266,7 @@ function SlacksTechies:OnNPCSpawned(event)
 						for i = 1, radiantSlots do
 							if #availableHeroes > 0 then
 								local botHero = table.remove(availableHeroes, 1)
-								Tutorial:AddBot(botHero, '', 'hard', true)
+								Tutorial:AddBot(botHero, '', 'unfair', true)
 							end
 						end
 
@@ -274,7 +274,7 @@ function SlacksTechies:OnNPCSpawned(event)
 						for i = 1, direSlots do
 							if #availableHeroes > 0 then
 								local botHero = table.remove(availableHeroes, 1)
-								Tutorial:AddBot(botHero, '', 'hard', false)
+								Tutorial:AddBot(botHero, '', 'unfair', false)
 							end
 						end
 					end)

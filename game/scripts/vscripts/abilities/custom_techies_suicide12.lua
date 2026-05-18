@@ -73,6 +73,7 @@ function custom_techies_suicide12:LandingEffect(landing_pos)
         })
         if caster:GetHealth() <= 0 then
             caster:Kill(self, caster)
+            caster:AddItemByName("item_tpscroll")
         end
     end
 end
