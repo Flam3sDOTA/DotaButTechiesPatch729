@@ -14,6 +14,7 @@ function custom_techies_suicide12:OnSpellStart()
     if not caster or not point then return end
 
     caster:EmitSound("Hero_Techies.BlastOff.Cast")
+    ParticleManager:CreateParticle("particles/units/heroes/hero_techies/techies_blast_off_cast.vpcf", PATTACH_ABSORIGIN, caster)
     caster:AddNewModifier(caster, self, "modifier_techies_suicide_leap12", {
         point_x = point.x,
         point_y = point.y,

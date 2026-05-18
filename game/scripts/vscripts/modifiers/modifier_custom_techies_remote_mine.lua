@@ -64,7 +64,7 @@ function modifier_custom_techies_remote_mine:Explode()
     self.parent:AddNoDraw()
 
     local pfx = ParticleManager:CreateParticle(
-        "particles/units/heroes/hero_techies/techies_remote_mines_detonate.vpcf",
+        "particles/econ/items/techies/techies_arcana/techies_remote_mines_detonate_arcana.vpcf",
         PATTACH_WORLDORIGIN, nil)
     ParticleManager:SetParticleControl(pfx, 0, pos)
     ParticleManager:SetParticleControl(pfx, 1, Vector(radius, 1, 1))

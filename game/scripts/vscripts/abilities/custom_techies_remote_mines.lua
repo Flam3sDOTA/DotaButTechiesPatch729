@@ -13,6 +13,7 @@ function custom_techies_remote_mines:OnSpellStart()
     
     local mine = CreateUnitByName("npc_dota_techies_custom_remote_mine", point, true, caster, caster, caster:GetTeamNumber())
     mine:SetControllableByPlayer(caster:GetPlayerID(), true)
+    ParticleManager:CreateParticle("particles/econ/items/techies/techies_arcana/techies_remote_mine_arcana.vpcf", PATTACH_ABSORIGIN_FOLLOW, mine)
     local remote_modifier = mine:AddNewModifier(caster, self, "modifier_custom_techies_remote_mine", {})
     mine:AddNewModifier(caster, self, "modifier_kill", {duration = self:GetSpecialValueFor("duration")})
     local talent = caster:FindAbilityByName("special_bonus_unique_techies_25_l")
@@ -23,7 +24,7 @@ function custom_techies_remote_mines:OnSpellStart()
             remote_modifier:SetRooted(false)
         end
     end
-    caster:EmitSound("Hero_Techies.StickyBomb.Plant") 
+    caster:EmitSound("Hero_Techies.StickyBomb.Plant")
 end
 
 function custom_techies_remote_mines:OnUpgrade()

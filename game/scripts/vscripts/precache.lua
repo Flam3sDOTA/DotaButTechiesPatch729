@@ -158,6 +158,13 @@ g_ParticlePrecache =
 	"particles/fall_2022_emblem_effect_gem_base_03_player_custom.vpcf",
 	"particles/fall_2022_emblem_effect_gem_base_02_player_custom.vpcf",
 	"particles/econ/events/fall_2021/fall_2021_emblem_game_effect.vpcf",
+	"particles/econ/items/techies/techies_arcana/techies_remote_mines_detonate_arcana.vpcf",
+	"particles/econ/items/techies/techies_arcana/techies_remote_mine_plant_stream.vpcf",
+	"particles/econ/items/techies/techies_arcana/techies_remote_mine_plant_arcana.vpcf",
+	"particles/units/heroes/hero_techies/techies_stasis_trap.vpcf",
+	"particles/units/heroes/hero_techies/techies_blast_off_cast.vpcf",
+	"particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf",
+	"particles/econ/items/techies/techies_arcana/techies_base_attack_arcana.vpcf",
 }
 
 g_UnitPrecache =

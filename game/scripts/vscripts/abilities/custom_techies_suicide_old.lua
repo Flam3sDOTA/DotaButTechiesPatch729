@@ -15,7 +15,7 @@ function custom_techies_suicide_old:OnSpellStart()
     caster:EmitSound("Hero_Techies.Suicide")
 
     local pfx = ParticleManager:CreateParticle(
-        "particles/units/heroes/hero_techies/techies_blast_off.vpcf",
+        "particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf",
         PATTACH_WORLDORIGIN, caster)
     ParticleManager:SetParticleControl(pfx, 0, origin)
     ParticleManager:ReleaseParticleIndex(pfx)

@@ -13,10 +13,6 @@
       },
     ============================================================ ]]
 
-    [289101818] = { -- Flam3s
-      particle =          "particles/econ/events/fall_2021/fall_2021_emblem_game_effect.vpcf",
-    },
-
     [68186278] = { -- SirActionSlacks
       particle =          "particles/fall_2022_emblem_effect_player_base_custom.vpcf",
       chat_message =      "#Response_GodGamer",

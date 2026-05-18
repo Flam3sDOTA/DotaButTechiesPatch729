@@ -13,6 +13,7 @@ function custom_techies_stasis_trap:OnSpellStart()
     local trap = CreateUnitByName("npc_dota_techies_stasis_trap", point, true, caster, caster, caster:GetTeamNumber())
     trap:SetControllableByPlayer(caster:GetPlayerID(), true)
     local trap_modifier = trap:AddNewModifier(caster, self, "modifier_custom_techies_stasis_trap_deploy", {})
+    ParticleManager:CreateParticle("particles/units/heroes/hero_techies/techies_stasis_trap.vpcf", PATTACH_ABSORIGIN, trap)
     local talent = caster:FindAbilityByName("special_bonus_unique_techies_25_l")
     if talent and talent:GetLevel() > 0 then
         local bonus_speed = talent:GetSpecialValueFor("value")

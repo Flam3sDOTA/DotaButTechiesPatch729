@@ -49,6 +49,7 @@
         "AttackRate"                    "1.7"
         "AttackRange"                   "700"
         "ProjectileSpeed"               "900"
+        "ProjectileModel"               "particles/econ/items/techies/techies_arcana/techies_base_attack_arcana.vpcf"
         "MovementSpeed"                 "320"
         "MovementTurnRate"              "0.6"
         "VisionDaytimeRange"            "1800"
