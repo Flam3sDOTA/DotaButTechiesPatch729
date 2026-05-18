@@ -224,3 +224,152 @@
     margin-bottom: 60px;
     text-shadow: 0px 0px 14px #4d8fff66;
 }
+
+#MineLeaderboardPanel {
+    x: 2px;
+    y: 110px;
+    width: 320px;
+    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(8, 12, 20, 0.97) ), to( rgba(15, 20, 35, 0.95) ) );
+    border: 1px solid rgba(180, 140, 40, 0.4);
+    border-radius: 4px;
+    flow-children: down;
+    align: left top;
+}
+
+.MineLBHeader {
+    width: 100%;
+    height: 42px;
+    background-color: gradient( linear, 0% 0%, 100% 0%, from( rgba(180, 140, 40, 0.25) ), to( rgba(180, 140, 40, 0.05) ) );
+    border-bottom: 1px solid rgba(180, 140, 40, 0.3);
+    flow-children: right;
+    padding: 0px 8px;
+}
+
+.MineLBTitle {
+    font-size: 15px;
+    color: #E8C84A;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 12px;
+}
+
+.MineLBHeaderSpacer {
+    width: fill-parent-flow( 1.0 );
+    height: 100%;
+}
+
+.MineLBCloseBtn {
+    width: 24px;
+    height: 24px;
+    wash-color: #888888;
+    background-image: url('file://{images}/custom_game/icons/close.png');
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    margin-top: 9px;
+    transition-property: wash-color;
+    transition-duration: 0.1s;
+}
+
+.MineLBCloseBtn:hover {
+    wash-color: white;
+}
+
+.MineLBList {
+    width: 100%;
+    flow-children: down;
+    padding: 6px 0px;
+}
+
+.MineLBHeaderRow {
+    width: 100%;
+    height: 28px;
+    flow-children: right;
+    padding: 0px 12px;
+    border-bottom: 1px solid rgba(180, 140, 40, 0.2);
+}
+
+.MineLBHeadRank {
+    width: 36px;
+    font-size: 11px;
+    color: rgba(180, 140, 40, 0.7);
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 8px;
+}
+
+.MineLBHeadName {
+    width: 180px;
+    font-size: 11px;
+    color: rgba(180, 140, 40, 0.7);
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 8px;
+}
+
+.MineLBHeadDeaths {
+    width: 60px;
+    font-size: 11px;
+    color: rgba(180, 140, 40, 0.7);
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: right;
+    margin-top: 8px;
+}
+
+.MineLBRow {
+    width: 100%;
+    height: 34px;
+    flow-children: right;
+    padding: 0px 12px;
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}
+
+.MineLBRow:hover {
+    background-color: rgba(180, 140, 40, 0.08);
+}
+
+.MineLBRowAlt {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.MineLBRank {
+    width: 36px;
+    font-size: 13px;
+    color: rgba(180, 140, 40, 0.7);
+    font-weight: bold;
+    margin-top: 9px;
+}
+
+.MineLBRankTop3 {
+    width: 36px;
+    font-size: 13px;
+    color: #E8C84A;
+    font-weight: bold;
+    margin-top: 9px;
+}
+
+.MineLBPortrait {
+    width: 18px;
+    height: 18px;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+.MineLBName {
+    width: 140px;
+    font-size: 13px;
+    color: #C8D4E8;
+    overflow: clip;
+    margin-top: 9px;
+}
+
+.MineLBDeaths {
+    width: 60px;
+    font-size: 13px;
+    color: #4AE8A0;
+    text-align: right;
+    margin-top: 9px;
+    font-weight: bold;
+}

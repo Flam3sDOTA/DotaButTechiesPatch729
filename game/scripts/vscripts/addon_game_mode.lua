@@ -108,6 +108,7 @@ function SlacksTechies:InitGameMode()
 	SlacksTechies.Bots = SlacksTechies.Bots or {}
 	SlacksTechies.Turbo = SlacksTechies.Turbo or {}
 	SlacksTechies.FullTurbo = SlacksTechies.FullTurbo or {}
+	SlacksTechies.MineDeaths = SlacksTechies.MineDeaths or {}
 
 	voteOptionsText = {}
 	voteOptionsText["force_techies"] = "Force Everyone Techies"
@@ -294,8 +295,8 @@ function SlacksTechies:OnEntityKilled(event)
     local killed = EntIndexToHScript(event.entindex_killed)
     if not killed or killed:IsNull() then return end
     if not killed:IsRealHero() then return end
-
     local inflictor = event.entindex_inflictor and EntIndexToHScript(event.entindex_inflictor)
+
     if inflictor and inflictor.GetAbilityName and inflictor:GetAbilityName() == "custom_techies_suicide_old" then
         if killed == inflictor:GetCaster() then
             Timers:CreateTimer(0.1, function()
@@ -304,6 +305,28 @@ function SlacksTechies:OnEntityKilled(event)
                     killed:SetTimeUntilRespawn(rt * 0.5)
                 end
             end)
+        end
+    end
+
+	local killerName = nil
+    if inflictor and inflictor.GetUnitName then
+        local un = inflictor:GetUnitName()
+        if un == "npc_dota_techies_land_mine_custom" or un == "npc_dota_techies_custom_remote_mine" then
+            killerName = un
+        end
+    end
+    if not killerName and inflictor and inflictor.GetAbilityName then
+        local an = inflictor:GetAbilityName()
+        if an == "custom_techies_land_mines" or an == "custom_techies_land_mines_old" or an == "custom_techies_remote_mines" then
+            killerName = "mine"
+        end
+    end
+
+    if killerName then
+        local pid = killed:GetPlayerID()
+        if pid and pid >= 0 then
+            SlacksTechies.MineDeaths[pid] = (SlacksTechies.MineDeaths[pid] or 0) + 1
+            SlacksTechies:SendMineLeaderboard()
         end
     end
 end
@@ -814,4 +837,23 @@ function SlacksTechies:OnPlayerUsedAbility(event)
             item:StartCooldown(item:GetCooldown(item:GetLevel()) * 0.5)
         end
     end)
+end
+
+function SlacksTechies:SendMineLeaderboard()
+    local board = {}
+    for pid = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
+        if PlayerResource:IsValidPlayerID(pid) then
+            local hero = PlayerResource:GetSelectedHeroEntity(pid)
+            local deaths = SlacksTechies.MineDeaths[pid] or 0
+            if hero and not (hero:GetUnitName() == "npc_dota_hero_techies" and deaths == 0) then
+                table.insert(board, {
+                    name = hero:GetUnitName(),
+					pid = pid,
+                    deaths = SlacksTechies.MineDeaths[pid] or 0
+                })
+            end
+        end
+    end
+    CustomGameEventManager:Send_ServerToAllClients("update_mine_leaderboard", { board = board })
+	print("[MINELB] sending " .. #board .. " entries")
 end

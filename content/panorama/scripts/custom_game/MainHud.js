@@ -41,6 +41,46 @@ if (customBtn1) {
     customBtn1.SetPanelEvent("onactivate", ToggleSlarkCrawl);
 }
 
+function ToggleMineLeaderboard() {
+    var panel = $("#MineLeaderboardPanel");
+    if (!panel) return;
+    panel.style.visibility = (panel.style.visibility === "visible") ? "collapse" : "visible";
+}
+
+function OnUpdateMineLeaderboard(data) {
+    var list = $("#MineLBList");
+    if (!list) return;
+    list.RemoveAndDeleteChildren();
+
+    var board = [];
+    for (var k in data.board) board.push(data.board[k]);
+    board.sort(function(a, b) { return b.deaths - a.deaths; });
+
+    for (var i = 0; i < board.length; i++) {
+        var row = $.CreatePanel("Panel", list, "");
+        row.AddClass("MineLBRow");
+        if (i % 2 === 1) row.AddClass("MineLBRowAlt");
+
+        var rank = $.CreatePanel("Label", row, "");
+        rank.AddClass(i < 3 ? "MineLBRankTop3" : "MineLBRank");
+        rank.text = (i + 1);
+
+        var portrait = $.CreatePanel("DOTAHeroImage", row, "");
+        portrait.AddClass("MineLBPortrait");
+        portrait.heroname = board[i].name;
+        portrait.heroimagestyle = "icon";
+
+        var name = $.CreatePanel("Label", row, "");
+        name.AddClass("MineLBName");
+        name.text = Players.GetPlayerName(board[i].pid);
+
+        var deaths = $.CreatePanel("Label", row, "");
+        deaths.AddClass("MineLBDeaths");
+        deaths.text = board[i].deaths;
+    }
+}
+
 (function() {
     GameEvents.Subscribe("request_detonate_selected", OnRequestDetonateSelected);
+    GameEvents.Subscribe("update_mine_leaderboard", OnUpdateMineLeaderboard);
 })();
