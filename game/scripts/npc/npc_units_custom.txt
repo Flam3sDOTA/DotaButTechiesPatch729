@@ -5,7 +5,7 @@
         // General
         //----------------------------------------------------------------
         "Model"                     "models/heroes/techies/fx_techiesfx_mine.vmdl"
-        "BaseClass"                 "npc_dota_creature"
+        "BaseClass"                 "npc_dota_techies_mines"
         "SoundSet"                  "0"
         "Level"                     "1"
         "ModelScale"                "1.0"
@@ -25,7 +25,7 @@
         "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
         "AttackDamageMin"           "0"
         "AttackDamageMax"           "0"   
-        "AttackRate"                "1.0"
+        "AttackRate"                "0"
         "AttackAnimationPoint"      "0.0"
         "AttackAcquisitionRange"    "0"
         "AttackRange"               "0"
@@ -60,7 +60,7 @@
         // General
         //----------------------------------------------------------------
         "Model"                     "models/heroes/techies/fx_techiesfx_stasis.vmdl"
-        "BaseClass"                 "npc_dota_creature"
+        "BaseClass"                 "npc_dota_techies_mines"
         "SoundSet"                  "0"
         "Level"                     "1"
         "ModelScale"                "1.0"
@@ -93,7 +93,7 @@
         "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
         "AttackDamageMin"           "0"
         "AttackDamageMax"           "0"   
-        "AttackRate"                "1.0"
+        "AttackRate"                "0"
         "AttackAnimationPoint"      "0.0"
         "AttackAcquisitionRange"    "0"
         "AttackRange"               "0"
@@ -152,7 +152,7 @@
         "AttackCapabilities"        "DOTA_UNIT_CAP_NO_ATTACK"
         "AttackDamageMin"           "0"
         "AttackDamageMax"           "0"  
-        "AttackRate"                "1.0"
+        "AttackRate"                "0"
         "AttackAnimationPoint"      "0.0"
         "AttackAcquisitionRange"    "0"
         "AttackRange"               "0"
@@ -181,7 +181,7 @@
     "npc_dota_techies_custom_remote_mine"
     {
         "Model"                         "models/heroes/techies/fx_techies_remotebomb.vmdl"
-        "BaseClass"                     "npc_dota_creature"
+        "BaseClass"                     "npc_dota_techies_mines"
         "SoundSet"                      "0"
         "Level"                         "1"
         "ModelScale"                    "1.0"
@@ -202,7 +202,7 @@
         "AttackCapabilities"            "DOTA_UNIT_CAP_NO_ATTACK"
         "AttackDamageMin"               "0"
         "AttackDamageMax"               "0"
-        "AttackRate"                    "1.0"
+        "AttackRate"                    "0"
         "AttackAnimationPoint"          "0.0"
         "AttackAcquisitionRange"        "0"
         "AttackRange"                   "0"

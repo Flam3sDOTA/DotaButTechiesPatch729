@@ -20,7 +20,7 @@
         "Ability14"                     "special_bonus_movement_speed_40"
         "Ability15"                     "special_bonus_unique_techies_20_l"
         "Ability16"                     "special_bonus_attack_damage_252"
-        "Ability17"                     "special_bonus_unique_techies_25_l"
+        "Ability17"                     "special_bonus_unique_techies_25_l_2"
 		"Ability18"                     ""
 		"Ability19"                     ""
 		"Ability20"                     ""

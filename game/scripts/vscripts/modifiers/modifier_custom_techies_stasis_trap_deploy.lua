@@ -47,7 +47,14 @@ function modifier_custom_techies_stasis_trap_deploy:OnIntervalThink()
         false
     )
 
-    if #enemies > 0 then
+    local trigger = false
+    for _, e in pairs(enemies) do
+        if e and not e:IsNull() and not e:HasFlyMovementCapability() then
+            trigger = true
+            break
+        end
+    end
+    if trigger then
         self:Trigger()
     end
 end

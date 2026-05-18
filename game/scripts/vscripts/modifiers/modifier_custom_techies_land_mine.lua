@@ -48,7 +48,13 @@ function modifier_custom_techies_land_mine:OnIntervalThink()
         false
     )
 
-    local enemy_in_range = #enemies > 0
+    local enemy_in_range = false
+    for _, e in pairs(enemies) do
+        if e and not e:IsNull() and not e:HasFlyMovementCapability() then
+            enemy_in_range = true
+            break
+        end
+    end
     if enemy_in_range then
         if not self.visible_to_enemies then
             self.visible_to_enemies = true

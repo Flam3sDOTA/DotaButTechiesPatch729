@@ -18,7 +18,6 @@
         "AbilityCastPoint"              "0.0"
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "110 130 150 170"
-        "AbilityCharges"                "3"
         "AbilityProcsMagicStick"        "1"
         "AbilityValues"
         {
@@ -36,6 +35,11 @@
             {
                 "value"                 "100"
                 "special_bonus_scepter" "+300"
+            }
+            "AbilityCharges"
+            {
+                "value"	                                  "3"
+                "special_bonus_unique_techies_25_l_2"     "+3"
             }
         }
     }
@@ -56,7 +60,6 @@
         "AbilityCastPoint"              "0.0"
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "110 130 150 170"
-        "AbilityCharges"                "3"
         "AbilityProcsMagicStick"        "1"
         "AbilityValues"
         {
@@ -75,6 +78,11 @@
             {
                 "value"                                 "100"
                 "special_bonus_scepter"                 "+300"
+            }
+            "AbilityCharges"
+            {
+                "value"	                                  "3"
+                "special_bonus_unique_techies_25_l_2"     "+3"
             }
         }
     }
@@ -100,7 +108,7 @@
         "AbilityValues"
         {
             "trigger_radius"    "400"
-            "stun_radius"       "600"
+            "stun_radius"       "400"
             "root_duration"     "2 3 4 5"
             "activation_delay"  "2.0"
             "AbilityCastRange"
@@ -346,6 +354,13 @@
         {
             "value"                 "60"
         }
+    }
+
+    "special_bonus_unique_techies_25_l_2"
+    {
+        "BaseClass"                 "special_bonus_base"
+        "AbilityType"               "ABILITY_TYPE_ATTRIBUTES"
+        "AbilityBehavior"           "DOTA_ABILITY_BEHAVIOR_PASSIVE"
     }
 
     "custom_techies_mana_innate"
