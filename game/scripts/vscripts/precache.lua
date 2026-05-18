@@ -70,6 +70,9 @@ g_ItemPrecache =
 	"item_enhancement_audacious",
 	"item_enhancement_feverish",
 	"item_enhancement_manic",
+	"item_aghanims_shard_roshan",
+	"item_refresher_shard",
+	"item_cheese",
 }
 
 g_ModelPrecache =
@@ -130,6 +133,8 @@ g_ModelPrecache =
 	"models/props_teams/banner_guild_lvl3.vmdl",
 	"models/props_teams/banner_guild_lvl4.vmdl",
 	"models/props_teams/roshans_banner.vmdl",
+	"models/props_gameplay/refresher_shard.vmdl",
+	"models/props_gameplay/cheese.vmdl",
 }
 
 g_ParticlePrecache =
