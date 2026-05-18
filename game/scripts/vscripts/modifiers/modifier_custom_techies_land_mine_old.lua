@@ -20,11 +20,23 @@ function modifier_custom_techies_land_mine_old:OnCreated(kv)
     self.detonation_delay    = self.ability:GetSpecialValueFor("detonation_delay")
     self.damage              = self.ability:GetSpecialValueFor("damage")
     self.building_damage_pct = self.ability:GetSpecialValueFor("building_damage_pct")
-
+    self.min_plant_distance  = self.ability:GetSpecialValueFor("min_plant_distance")
     self.active             = false
     self.detonation_timer   = 0
     self.visible_to_enemies = false
     self.bRootEnabled = true
+
+    local player = self.caster:GetPlayerOwner()
+    if player then
+        self.ring_fx = ParticleManager:CreateParticleForPlayer(
+            "particles/mineringindicator.vpcf", 
+            PATTACH_ABSORIGIN_FOLLOW, 
+            self.parent, 
+            player
+        )
+        ParticleManager:SetParticleControl(self.ring_fx, 1, Vector(self.min_plant_distance, 0, 0))
+        self:AddParticle(self.ring_fx, true, false, -1, false, false)
+    end
 
     self:StartIntervalThink(self.activation_delay)
 end
@@ -114,6 +126,7 @@ function modifier_custom_techies_land_mine_old:Explode()
         EmitSoundOnLocationWithCaster(pos, "Hero_Techies.StickyBomb.Detonate", self.caster)
     end
 
+    ParticleManager:DestroyParticle(self.ring_fx, true)
     self.parent:ForceKill(false)
 end
 

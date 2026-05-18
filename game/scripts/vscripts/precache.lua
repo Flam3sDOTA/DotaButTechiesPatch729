@@ -165,6 +165,7 @@ g_ParticlePrecache =
 	"particles/units/heroes/hero_techies/techies_blast_off_cast.vpcf",
 	"particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf",
 	"particles/econ/items/techies/techies_arcana/techies_base_attack_arcana.vpcf",
+	"particles/mineringindicator.vpcf",
 }
 
 g_UnitPrecache =
