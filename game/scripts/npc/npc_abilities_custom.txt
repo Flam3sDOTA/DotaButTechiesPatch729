@@ -19,6 +19,7 @@
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "110 130 150 170"
         "AbilityProcsMagicStick"        "1"
+        "AbilityCharges"                "3"
         "AbilityValues"
         {
             "damage"                    "200 400 600 800"
@@ -35,11 +36,6 @@
             {
                 "value"                 "100"
                 "special_bonus_scepter" "+300"
-            }
-            "AbilityCharges"
-            {
-                "value"	                                  "3"
-                "special_bonus_unique_techies_25_l_2"     "+3"
             }
         }
     }
@@ -277,7 +273,6 @@
 
         "AbilityValues"
         {
-            "radius"                    "425"
             "duration"                  "600"
             "detonation_delay"          "0.25"
             "fade_time"                 "2.0"
@@ -290,6 +285,11 @@
             {
                 "value"                 "500"
                 "special_bonus_scepter" "+300"
+            }
+            "radius"
+            {
+                "value"	                                  "425"
+                "special_bonus_unique_techies_25_l_2"     "+575"
             }
         }
     }
