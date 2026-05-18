@@ -10,15 +10,18 @@
 		
 		<Panel id="OptionList">
 			<Panel id="OptionListGroup">
-			<Label id="OptionTitle" text="VOTE OPTIONS" />
+			<Label id="OptionTitle" text="#VoteOptions" />
 			<Panel id="OptionDivider" />
 				<Panel id="Options">
-					<ToggleButton id="force_techies" class="VoteToggle" text="Force Everyone Techies (Bots Excluded)" onactivate="VoteOptionClicked('force_techies')" />
-					<ToggleButton id="swap_blast_off" class="VoteToggle" text="Old Suicide Squad, Attack!" onactivate="VoteOptionClicked('swap_blast_off')" />
-					<ToggleButton id="swap_red_mines" class="VoteToggle" text="Red Mines: Increased Damage, Can't Stack" onactivate="VoteOptionClicked('swap_red_mines')" />
-					<ToggleButton id="fill_bots" class="VoteToggle" text="Fill Empty Slots With Bots (Requires Cheats ON)" onactivate="VoteOptionClicked('fill_bots')" />
-					<ToggleButton id="turbo_mode" class="VoteToggle" text="Turbo XP + Gold" onactivate="VoteOptionClicked('turbo_mode')" />
-					<ToggleButton id="turbo_mode_full" class="VoteToggle" text="Full Turbo Mode" onactivate="VoteOptionClicked('turbo_mode_full')" />
+					<ToggleButton id="force_techies" class="VoteToggle" text="#ForceTechies" onactivate="VoteOptionClicked('force_techies')" />
+					<ToggleButton id="random_techies" class="VoteToggle" text="#RandomTechies" onactivate="VoteOptionClicked('random_techies')" />
+					<Panel class="GroupDivider" />
+					<ToggleButton id="turbo_mode" class="VoteToggle" text="#ForceTurboMode" onactivate="VoteOptionClicked('turbo_mode')" />
+					<ToggleButton id="turbo_mode_full" class="VoteToggle" text="#ForceFullTurboMode" onactivate="VoteOptionClicked('turbo_mode_full')" />
+					<Panel class="GroupDivider" />
+					<ToggleButton id="swap_blast_off" class="VoteToggle" text="#SwapBlastOff" onactivate="VoteOptionClicked('swap_blast_off')" />
+					<ToggleButton id="swap_red_mines" class="VoteToggle" text="#SwapRedMines" onactivate="VoteOptionClicked('swap_red_mines')" />
+					<ToggleButton id="fill_bots" class="VoteToggle" text="#FillBots" onactivate="VoteOptionClicked('fill_bots')" />
 				</Panel>
 			</Panel>
 		</Panel>

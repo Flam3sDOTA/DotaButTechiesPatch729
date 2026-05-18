@@ -102,11 +102,21 @@ end
 
 function SlacksTechies:InitGameMode()
 	SlacksTechies.TechiesVotes = SlacksTechies.TechiesVotes or {}
+	SlacksTechies.RandomTechiesVotes = SlacksTechies.RandomTechiesVotes or {}
 	SlacksTechies.AbilityVotes = SlacksTechies.AbilityVotes or {}
 	SlacksTechies.RedMines = SlacksTechies.RedMines or {}
 	SlacksTechies.Bots = SlacksTechies.Bots or {}
 	SlacksTechies.Turbo = SlacksTechies.Turbo or {}
 	SlacksTechies.FullTurbo = SlacksTechies.FullTurbo or {}
+
+	voteOptionsText = {}
+	voteOptionsText["force_techies"] = "Force Everyone Techies"
+	voteOptionsText["random_techies"] = "Random Player Gets Techies"
+	voteOptionsText["turbo_mode"] = "Turbo XP + Gold"
+	voteOptionsText["turbo_mode_full"] = "Full Turbo Mode"
+	voteOptionsText["swap_blast_off"] = "Old Suicide Squad, Attack!"
+	voteOptionsText["swap_red_mines"] = "Red Mines: Increased Damage, But Can't Stack"
+	voteOptionsText["fill_bots"] = "Fill Empty Slots With Bots"
 
 	MAX_TEAMS = 2   
 	PLAYER_COUNT = {}        
@@ -128,6 +138,7 @@ function SlacksTechies:InitGameMode()
 	GameRules:SetCustomGameAllowMusicAtGameStart(false)
 	GameRules:SetCustomGameAllowBattleMusic(false)
 	GameRules:SetCustomGameAllowHeroPickMusic(false)
+	GameRules:SetCustomGameSetupAutoLaunchDelay(60)
 
 	local GameMode = GameRules:GetGameModeEntity()
 	GameMode:SetUseDefaultDOTARuneSpawnLogic(true)
@@ -325,13 +336,30 @@ function SlacksTechies:OnGameRulesStateChange()
   if nNewState == DOTA_GAMERULES_STATE_HERO_SELECTION then
 	print( "DOTA_GAMERULES_STATE_HERO_SELECTION" )
 	SlacksTechies:EvaluateTechiesVote()
+	SlacksTechies:EvaluateRandomTechiesVote()
 	SlacksTechies:EvaluateAbilityVote()
 	SlacksTechies:EvaluateRedMinesVote()
 	SlacksTechies:EvaluateBots()
-	SlacksTechies:EvaluateTurbo()
 	SlacksTechies:EvaluateFullTurbo()
+	SlacksTechies:EvaluateTurbo()
   elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
+    local results = {
+		{ text = voteOptionsText["force_techies"],   active = SlacksTechies.ForceTechiesMode  },
+		{ text = voteOptionsText["random_techies"],  active = SlacksTechies.RandomTechiesMode },
+		{ text = voteOptionsText["turbo_mode"],      active = SlacksTechies.TurboMode         },
+		{ text = voteOptionsText["turbo_mode_full"], active = SlacksTechies.FullTurboMode     },
+		{ text = voteOptionsText["swap_blast_off"],  active = SlacksTechies.BlastOffSwapped   },
+		{ text = voteOptionsText["swap_red_mines"],  active = SlacksTechies.RedMinesSwapped   },
+		{ text = voteOptionsText["fill_bots"],       active = SlacksTechies.FillBots          },
+	}
+    for _, result in ipairs(results) do
+        if result.active then
+            GameRules:SendCustomMessage("<b color='LawnGreen'>[ACTIVE]: </b><b color='white'>" .. result.text .. "</b>", 0, 0)
+        else
+            GameRules:SendCustomMessage("<b color='red'>[DISABLED]: </b><b color='white'>" .. result.text .. "</b>", 0, 0)
+        end
+    end
     SlacksTechies:OnGamePreGame()
   elseif nNewState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
     print( "DOTA_GAMERULES_STATE_GAME_IN_PROGRESS" )
@@ -427,6 +455,17 @@ function SlacksTechies.OnVoteOptionClicked(eventSourceIndex, data)
             votes = yesVotes,
             playerCount = PlayerResource:GetPlayerCount()
         })
+	elseif option == "random_techies" then
+		SlacksTechies.RandomTechiesVotes[playerID] = value
+		local yesVotes = 0
+		for pID, v in pairs(SlacksTechies.RandomTechiesVotes) do
+			if v then yesVotes = yesVotes + 1 end
+		end
+		CustomGameEventManager:Send_ServerToAllClients("update_vote_label", {
+			option = option,
+			votes = yesVotes,
+			playerCount = PlayerResource:GetPlayerCount()
+		})
     elseif option == "swap_blast_off" then
         SlacksTechies.AbilityVotes[playerID] = value
         local yesVotes = 0
@@ -511,6 +550,7 @@ function SlacksTechies:EvaluateTechiesVote()
     end
     
     if yesVotes > (activePlayers / 2) then
+		SlacksTechies.ForceTechiesMode = true
         GameRules:SetSameHeroSelectionEnabled(true)
         Timers:CreateTimer(0.1, function()
             for pID = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
@@ -523,6 +563,51 @@ function SlacksTechies:EvaluateTechiesVote()
             end
             GameRules:SetHeroSelectionTime(1)
         end)
+	else
+        SlacksTechies.ForceTechiesMode = false
+    end
+end
+
+function SlacksTechies:EvaluateRandomTechiesVote()
+	if SlacksTechies.ForceTechiesMode then
+		return
+	end
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.RandomTechiesVotes then
+        for playerID, wantsTechies in pairs(SlacksTechies.RandomTechiesVotes) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsTechies then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+		SlacksTechies.RandomTechiesMode = true
+		local validIDs = {}
+		for pID = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
+            if PlayerResource:IsValidPlayerID(pID) and PlayerResource:IsValidPlayer(pID) then
+                table.insert(validIDs, pID)
+            end
+        end
+        if #validIDs > 0 then
+            local chosen = validIDs[RandomInt(1, #validIDs)]
+            Timers:CreateTimer(0.1, function()
+                local player = PlayerResource:GetPlayer(chosen)
+                if player then
+                    player:SetSelectedHero("npc_dota_hero_techies")
+				 	Timers:CreateTimer(0.1, function()
+						Say(PlayerResource:GetPlayer(chosen), "Has randomed Techies", false)
+					 end)
+                end
+            end)
+        end
+	else
+		SlacksTechies.RandomTechiesMode = false
     end
 end
 
@@ -592,33 +677,6 @@ function SlacksTechies:EvaluateBots()
     end
 end
 
-function SlacksTechies:EvaluateTurbo()
-    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
-    local yesVotes = 0
-    
-    if SlacksTechies.Turbo then
-        for playerID, wantsSwap in pairs(SlacksTechies.Turbo) do
-            local pID = tonumber(playerID)
-            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
-                if wantsSwap then
-                    yesVotes = yesVotes + 1
-                end
-            end
-        end
-    end
-    
-    if yesVotes > (activePlayers / 2) then
-        SlacksTechies.TurboMode = true
-		local GameMode = GameRules:GetGameModeEntity()
-		GameRules:SetFilterMoreGold(true)
-		GameMode:SetModifyGoldFilter(Dynamic_Wrap(SlacksTechies, "OnModifyGold"), self)
-		GameMode:SetModifyExperienceFilter(Dynamic_Wrap(SlacksTechies, "OnModifyExperience"), self)
-		GameMode:SetBountyRunePickupFilter(Dynamic_Wrap(SlacksTechies, "OnBountyRunePickup"), self)
-    else
-        SlacksTechies.TurboMode = false
-    end
-end
-
 function SlacksTechies:EvaluateFullTurbo()
     local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
     local yesVotes = 0
@@ -658,6 +716,38 @@ function SlacksTechies:EvaluateFullTurbo()
 		end)
     else
         SlacksTechies.FullTurboMode = false
+    end
+end
+
+function SlacksTechies:EvaluateTurbo()
+	if SlacksTechies.FullTurboMode then
+		SlacksTechies.TurboMode = false
+		return
+	end
+
+    local activePlayers = PlayerResource:GetNumConnectedHumanPlayers()
+    local yesVotes = 0
+    
+    if SlacksTechies.Turbo then
+        for playerID, wantsSwap in pairs(SlacksTechies.Turbo) do
+            local pID = tonumber(playerID)
+            if pID and PlayerResource:IsValidPlayerID(pID) and PlayerResource:GetConnectionState(pID) == DOTA_CONNECTION_STATE_CONNECTED then
+                if wantsSwap then
+                    yesVotes = yesVotes + 1
+                end
+            end
+        end
+    end
+    
+    if yesVotes > (activePlayers / 2) then
+        SlacksTechies.TurboMode = true
+		local GameMode = GameRules:GetGameModeEntity()
+		GameRules:SetFilterMoreGold(true)
+		GameMode:SetModifyGoldFilter(Dynamic_Wrap(SlacksTechies, "OnModifyGold"), self)
+		GameMode:SetModifyExperienceFilter(Dynamic_Wrap(SlacksTechies, "OnModifyExperience"), self)
+		GameMode:SetBountyRunePickupFilter(Dynamic_Wrap(SlacksTechies, "OnBountyRunePickup"), self)
+    else
+        SlacksTechies.TurboMode = false
     end
 end
 
