@@ -367,7 +367,62 @@ function SlacksTechies:OnGameRulesStateChange()
 	SlacksTechies:EvaluateTurbo()
   elseif nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
     print( "DOTA_GAMERULES_STATE_PRE_GAME" )
-    local results = {
+    SlacksTechies:OnGamePreGame()
+  elseif nNewState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+    print( "DOTA_GAMERULES_STATE_GAME_IN_PROGRESS" )
+	if SlacksTechies.FullTurboMode then
+		SlacksTechies:ApplyTurboBuildingStats()
+	end
+  end
+end
+
+function SlacksTechies:ApplyTurboBuildingStats()
+    Timers:CreateTimer(0.1, function()
+        local TURBO_BUILDING_STATS = {
+            ["npc_dota_goodguys_fort"] = { regen = 0 },
+            ["npc_dota_badguys_fort"]  = { regen = 0 },
+            ["npc_dota_goodguys_tower1_top"] = { hp = 1350, armor = 9 },
+            ["npc_dota_goodguys_tower1_mid"] = { hp = 1350, armor = 9 },
+            ["npc_dota_goodguys_tower1_bot"] = { hp = 1350, armor = 9 },
+            ["npc_dota_badguys_tower1_top"]  = { hp = 1350, armor = 9 },
+            ["npc_dota_badguys_tower1_mid"]  = { hp = 1350, armor = 9 },
+            ["npc_dota_badguys_tower1_bot"]  = { hp = 1350, armor = 9 },
+            ["npc_dota_goodguys_tower2_top"] = { hp = 2500, armor = 16 },
+            ["npc_dota_goodguys_tower2_mid"] = { hp = 2500, armor = 16 },
+            ["npc_dota_goodguys_tower2_bot"] = { hp = 2500, armor = 16 },
+            ["npc_dota_badguys_tower2_top"]  = { hp = 2500, armor = 16 },
+            ["npc_dota_badguys_tower2_mid"]  = { hp = 2500, armor = 16 },
+            ["npc_dota_badguys_tower2_bot"]  = { hp = 2500, armor = 16 },
+            ["npc_dota_goodguys_tower3_top"] = { hp = 2500, armor = 16 },
+            ["npc_dota_goodguys_tower3_mid"] = { hp = 2500, armor = 16 },
+            ["npc_dota_goodguys_tower3_bot"] = { hp = 2500, armor = 16 },
+            ["npc_dota_badguys_tower3_top"]  = { hp = 2500, armor = 16 },
+            ["npc_dota_badguys_tower3_mid"]  = { hp = 2500, armor = 16 },
+            ["npc_dota_badguys_tower3_bot"]  = { hp = 2500, armor = 16 },
+            ["npc_dota_goodguys_tower4"]     = { hp = 2600, armor = 21 },
+            ["npc_dota_badguys_tower4"]      = { hp = 2600, armor = 21 },
+        }
+        local allUnits = FindUnitsInRadius(
+            DOTA_TEAM_NEUTRALS, Vector(0, 0, 0), nil, 25000,
+            DOTA_UNIT_TARGET_TEAM_BOTH, DOTA_UNIT_TARGET_ALL,
+            DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES + DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO,
+            FIND_ANY_ORDER, false
+        )
+        for _, ent in ipairs(allUnits) do
+            if ent and not ent:IsNull() then
+                local stats = TURBO_BUILDING_STATS[ent:GetUnitName()]
+                if stats then
+                    if stats.regen ~= nil then ent:SetBaseHealthRegen(stats.regen) end
+                    if stats.hp then ent:SetMaxHealth(stats.hp) ent:SetHealth(stats.hp) end
+                    if stats.armor then ent:SetPhysicalArmorBaseValue(stats.armor) end
+                end
+            end
+        end
+    end)
+end
+
+function SlacksTechies:OnGamePreGame()
+	local results = {
 		{ text = voteOptionsText["force_techies"],   active = SlacksTechies.ForceTechiesMode  },
 		{ text = voteOptionsText["random_techies"],  active = SlacksTechies.RandomTechiesMode },
 		{ text = voteOptionsText["turbo_mode"],      active = SlacksTechies.TurboMode         },
@@ -376,6 +431,7 @@ function SlacksTechies:OnGameRulesStateChange()
 		{ text = voteOptionsText["swap_red_mines"],  active = SlacksTechies.RedMinesSwapped   },
 		{ text = voteOptionsText["fill_bots"],       active = SlacksTechies.FillBots          },
 	}
+	
     for _, result in ipairs(results) do
         if result.active then
             GameRules:SendCustomMessage("<b color='LawnGreen'>[ACTIVE]: </b><b color='white'>" .. result.text .. "</b>", 0, 0)
@@ -383,63 +439,9 @@ function SlacksTechies:OnGameRulesStateChange()
             GameRules:SendCustomMessage("<b color='red'>[DISABLED]: </b><b color='white'>" .. result.text .. "</b>", 0, 0)
         end
     end
-    SlacksTechies:OnGamePreGame()
-  elseif nNewState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-    print( "DOTA_GAMERULES_STATE_GAME_IN_PROGRESS" )
-  end
-end
-
-function SlacksTechies:OnGamePreGame()
+	
 	if SlacksTechies.FullTurboMode then
-		Timers:CreateTimer(0.1, function()
-			local TURBO_BUILDING_STATS = {
-				["npc_dota_goodguys_fort"] = { regen = 0 },
-				["npc_dota_badguys_fort"]  = { regen = 0 },
-				["npc_dota_goodguys_tower1_top"] = { hp = 1350, armor = 9 },
-				["npc_dota_goodguys_tower1_mid"] = { hp = 1350, armor = 9 },
-				["npc_dota_goodguys_tower1_bot"] = { hp = 1350, armor = 9 },
-				["npc_dota_badguys_tower1_top"]  = { hp = 1350, armor = 9 },
-				["npc_dota_badguys_tower1_mid"]  = { hp = 1350, armor = 9 },
-				["npc_dota_badguys_tower1_bot"]  = { hp = 1350, armor = 9 },
-				["npc_dota_goodguys_tower2_top"] = { hp = 2500, armor = 16 },
-				["npc_dota_goodguys_tower2_mid"] = { hp = 2500, armor = 16 },
-				["npc_dota_goodguys_tower2_bot"] = { hp = 2500, armor = 16 },
-				["npc_dota_badguys_tower2_top"]  = { hp = 2500, armor = 16 },
-				["npc_dota_badguys_tower2_mid"]  = { hp = 2500, armor = 16 },
-				["npc_dota_badguys_tower2_bot"]  = { hp = 2500, armor = 16 },
-				["npc_dota_goodguys_tower3_top"] = { hp = 2500, armor = 16 },
-				["npc_dota_goodguys_tower3_mid"] = { hp = 2500, armor = 16 },
-				["npc_dota_goodguys_tower3_bot"] = { hp = 2500, armor = 16 },
-				["npc_dota_badguys_tower3_top"]  = { hp = 2500, armor = 16 },
-				["npc_dota_badguys_tower3_mid"]  = { hp = 2500, armor = 16 },
-				["npc_dota_badguys_tower3_bot"]  = { hp = 2500, armor = 16 },
-				["npc_dota_goodguys_tower4"]     = { hp = 2600, armor = 21 },
-				["npc_dota_badguys_tower4"]      = { hp = 2600, armor = 21 },
-			}
-			
-			local allUnits = FindUnitsInRadius(
-				DOTA_TEAM_NEUTRALS,
-				Vector(0, 0, 0),
-				nil,
-				25000,
-				DOTA_UNIT_TARGET_TEAM_BOTH,
-				DOTA_UNIT_TARGET_ALL,
-				DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES + DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO,
-				FIND_ANY_ORDER,
-				false
-			)
-
-			for _, ent in ipairs(allUnits) do
-				if ent and not ent:IsNull() then
-					local stats = TURBO_BUILDING_STATS[ent:GetUnitName()]
-					if stats then
-						if stats.regen ~= nil then ent:SetBaseHealthRegen(stats.regen) end
-						if stats.hp then ent:SetMaxHealth(stats.hp) ent:SetHealth(stats.hp) end
-						if stats.armor then ent:SetPhysicalArmorBaseValue(stats.armor) end
-					end
-				end
-			end
-		end)
+		SlacksTechies:ApplyTurboBuildingStats()
 	end
 
     Timers:CreateTimer(4, function()

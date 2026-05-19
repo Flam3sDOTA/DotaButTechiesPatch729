@@ -10,6 +10,18 @@
 	background-size: 100% 100%;
 }
 
+@keyframes 'TeamsListAppear'
+
+    {
+    0% {
+        transform: translatex(-100%);
+    }
+
+    100% {
+        transform: translatex(0px);
+    }
+}
+
 #OptionList {
     width: 480px;
     height: 285px;
@@ -23,6 +35,8 @@
     margin-right: 250px;
     wash-color: #ff883333;
     margin-bottom: 200px;
+    animation-name: TeamsListAppear;
+    animation-duration: 3s;
 }
 
 #OptionListGroup {

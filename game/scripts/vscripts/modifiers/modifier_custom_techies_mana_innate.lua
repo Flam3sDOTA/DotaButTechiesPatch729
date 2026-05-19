@@ -8,7 +8,7 @@ local TAUNT_TEXTS = {
     "gg ez",
     "?",
     "First time?",
-    "Imagine dying to Slacks' techies in 2026",
+    "Imagine dying to techies in 2026",
     "OSFROG Balanced BTW",
     "Smells like skill issue",
     "0 map awareness",
