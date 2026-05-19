@@ -14,7 +14,7 @@
             <Button id="NewSettingsButton" class="TopLeftMenuButton" onactivate="DOTAShowSettingsRebornPopup();" onmouseover="UIShowTextTooltip(#DOTA_HUD_Settings)" onmouseout="UIHideTextTooltip()" />
             <Button id="NewScoreboardButton" class="TopLeftMenuButton" onactivate="DOTAHUDToggleScoreboard();" onmouseover="UIShowTextTooltip(#DOTA_HUD_Scoreboard)" onmouseout="UIHideTextTooltip()" />
             <Button id="CustomButton1" class="TopLeftMenuButton" onactivate="ToggleSlarkCrawl()" onmouseover="UIShowTextTooltip('Tragedy of Darth Slark87 the Fool')" onmouseout="UIHideTextTooltip()" />
-            <Button id="CustomButton2" class="TopLeftMenuButton" onactivate="ToggleMineLeaderboard()" onmouseover="UIShowTextTooltip('Mine Deaths Leaderboard')" onmouseout="UIHideTextTooltip()" />
+            <Button id="CustomButton2" class="TopLeftMenuButton" onactivate="ToggleMineLeaderboard()" onload="DOTAShowTextTooltip('Mine Deaths Leaderboard')" onmouseover="UIShowTextTooltip('Mine Deaths Leaderboard')" onmouseout="UIHideTextTooltip()" />
         </Panel>
 
         <Panel id="SlarkCrawlPanel" hittest="true" style="visibility: collapse;">
