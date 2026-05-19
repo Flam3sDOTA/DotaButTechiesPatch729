@@ -10,7 +10,7 @@
 	background-size: 100% 100%;
 }
 
-@keyframes 'TeamsListAppear'
+@keyframes 'TeamsListAppear2'
 
     {
     0% {
@@ -35,7 +35,7 @@
     margin-right: 250px;
     wash-color: #ff883333;
     margin-bottom: 200px;
-    animation-name: TeamsListAppear;
+    animation-name: TeamsListAppear2;
     animation-duration: 3s;
 }
 
