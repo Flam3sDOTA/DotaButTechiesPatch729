@@ -28,7 +28,7 @@
 		"Ability22"                     ""
 		"Ability23"                     ""
 		"Ability24"                     ""
-		"Ability25"                     ""
+		"Ability25"                     "special_bonus_attributes"
 		"Ability26"                     ""
 		"Ability27"                     ""
 		"Ability28"                     ""
