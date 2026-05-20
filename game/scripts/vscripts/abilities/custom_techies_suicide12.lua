@@ -72,8 +72,8 @@ function custom_techies_suicide12:LandingEffect(landing_pos)
             damage_flags = DOTA_DAMAGE_FLAG_HPLOSS + DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
         })
         if caster:GetHealth() <= 0 then
-            caster:Kill(self, caster)
             caster:AddItemByName("item_tpscroll")
+            caster:Kill(self, caster)
         end
     end
 end

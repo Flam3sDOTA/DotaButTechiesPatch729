@@ -172,6 +172,7 @@ g_ParticlePrecache =
 	"particles/econ/items/techies/techies_arcana/techies_base_attack_arcana.vpcf",
 	"particles/econ/items/techies/techies_arcana/techies_remote_mine_arcana.vpcf",
 	"particles/mineringindicator.vpcf",
+	"particles/mineringindicator_ally.vpcf",
 	"particles/econ/events/ti10/aghanim_aura_ti10/agh_aura_pre_ti10.vpcf",
 }
 

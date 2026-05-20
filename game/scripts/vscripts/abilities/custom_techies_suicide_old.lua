@@ -1,7 +1,5 @@
 custom_techies_suicide_old = class({})
 
-LinkLuaModifier("modifier_techies_suicide_respawn_time", "modifiers/modifier_techies_suicide_respawn_time", LUA_MODIFIER_MOTION_NONE)
-
 function custom_techies_suicide_old:GetAOERadius()
     return self:GetSpecialValueFor("partial_damage_radius")
 end
@@ -63,8 +61,10 @@ function custom_techies_suicide_old:OnSpellStart()
             damage_type  = DAMAGE_TYPE_PURE,
             damage_flags = DOTA_DAMAGE_FLAG_HPLOSS + DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION,
         })
-        caster:Kill(self, caster)
-        caster:AddItemByName("item_tpscroll")
+        if caster:GetHealth() <= 0 then
+            caster:AddItemByName("item_tpscroll")
+            caster:Kill(self, caster)
+        end
     end
 end
 

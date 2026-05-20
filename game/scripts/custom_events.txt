@@ -10,4 +10,15 @@
     "update_mine_leaderboard"
     {
     }
+    "mine_planted"
+    {
+        "entindex"  "short"
+        "owner_pid" "short"
+        "team"      "short"
+        "min_dist"  "short"
+    }
+    "mine_removed"
+    {
+        "entindex"  "short"
+    }
 }

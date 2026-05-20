@@ -209,7 +209,8 @@ function SlacksTechies:OnNPCSpawned(event)
 					end
 				end
 
-				if SlacksTechies.FillBots then
+				if SlacksTechies.FillBots and not SlacksTechies.BotsFilled then
+					SlacksTechies.BotsFilled = true
 					Timers:CreateTimer(1, function()
 						SendToServerConsole('sv_cheats 1')
 						Convars:SetBool('dota_bot_mode', true)
@@ -857,5 +858,4 @@ function SlacksTechies:SendMineLeaderboard()
         end
     end
     CustomGameEventManager:Send_ServerToAllClients("update_mine_leaderboard", { board = board })
-	print("[MINELB] sending " .. #board .. " entries")
 end

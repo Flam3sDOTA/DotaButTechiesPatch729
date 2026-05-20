@@ -26,17 +26,14 @@ function modifier_custom_techies_land_mine_old:OnCreated(kv)
     self.visible_to_enemies = false
     self.bRootEnabled = true
 
-    local player = self.caster:GetPlayerOwner()
-    if player then
-        self.ring_fx = ParticleManager:CreateParticleForPlayer(
-            "particles/mineringindicator.vpcf", 
-            PATTACH_ABSORIGIN_FOLLOW, 
-            self.parent, 
-            player
-        )
-        ParticleManager:SetParticleControl(self.ring_fx, 1, Vector(self.min_plant_distance, 0, 0))
-        self:AddParticle(self.ring_fx, true, false, -1, false, false)
-    end
+    self.parent_entindex = self.parent:GetEntityIndex()
+
+    CustomGameEventManager:Send_ServerToAllClients("mine_planted", {
+        entindex  = self.parent_entindex,
+        owner_pid = self.caster:GetPlayerOwnerID(),
+        team      = self.caster:GetTeamNumber(),
+        min_dist  = self.min_plant_distance,
+    })
 
     self:StartIntervalThink(self.activation_delay)
 end
@@ -132,8 +129,15 @@ function modifier_custom_techies_land_mine_old:Explode()
         EmitSoundOnLocationWithCaster(pos, "Hero_Techies.StickyBomb.Detonate", self.caster)
     end
 
-    ParticleManager:DestroyParticle(self.ring_fx, true)
     self.parent:ForceKill(false)
+end
+
+function modifier_custom_techies_land_mine_old:OnDestroy()
+    if not IsServer() then return end
+    if not self.parent_entindex then return end
+    CustomGameEventManager:Send_ServerToAllClients("mine_removed", {
+        entindex = self.parent_entindex,
+    })
 end
 
 function modifier_custom_techies_land_mine_old:CheckState()
@@ -175,3 +179,4 @@ function modifier_custom_techies_land_mine_old:OnAttackLanded(keys)
         self.parent:Kill(self.ability, keys.attacker)
     end
 end
+

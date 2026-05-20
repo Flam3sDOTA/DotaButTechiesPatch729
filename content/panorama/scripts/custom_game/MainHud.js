@@ -80,7 +80,78 @@ function OnUpdateMineLeaderboard(data) {
     }
 }
 
+var MINE_RING_OWN  = "particles/mineringindicator.vpcf";
+var MINE_RING_ALLY = "particles/mineringindicator_ally.vpcf";
+
+var trackedMines = {};
+var activeRings  = {};
+var lastAltDown  = false;
+
+function ShowRingForMine(entindex) {
+    if (activeRings[entindex]) return;
+    var mine = trackedMines[entindex];
+    if (!mine) return;
+    var localPid = Players.GetLocalPlayer();
+    if (Players.GetTeam(localPid) !== mine.team) return;
+    var particle = (mine.owner_pid === localPid) ? MINE_RING_OWN : MINE_RING_ALLY;
+    var pIdx = Particles.CreateParticle(particle, ParticleAttachment_t.PATTACH_ABSORIGIN_FOLLOW, parseInt(entindex));
+    Particles.SetParticleControl(pIdx, 1, [mine.min_dist, 0, 0]);
+    activeRings[entindex] = pIdx;
+}
+
+function HideRingForMine(entindex) {
+    var pIdx = activeRings[entindex];
+    if (pIdx !== undefined) {
+        Particles.DestroyParticleEffect(pIdx, true);
+        Particles.ReleaseParticleIndex(pIdx);
+        delete activeRings[entindex];
+    }
+}
+
+function ShowAllRings() {
+    for (var entindex in trackedMines) {
+        ShowRingForMine(entindex);
+    }
+}
+
+function HideAllRings() {
+    for (var entindex in activeRings) {
+        var pIdx = activeRings[entindex];
+        Particles.DestroyParticleEffect(pIdx, true);
+        Particles.ReleaseParticleIndex(pIdx);
+    }
+    activeRings = {};
+}
+
+function OnMinePlanted(data) {
+    trackedMines[data.entindex] = {
+        owner_pid: data.owner_pid,
+        team: data.team,
+        min_dist: data.min_dist
+    };
+    if (lastAltDown) ShowRingForMine(data.entindex);
+}
+
+function OnMineRemoved(data) {
+    delete trackedMines[data.entindex];
+    HideRingForMine(data.entindex);
+}
+
+function TickAlt() {
+    var altDown = GameUI.IsAltDown();
+    if (altDown && !lastAltDown) {
+        ShowAllRings();
+    } else if (!altDown && lastAltDown) {
+        HideAllRings();
+    }
+    lastAltDown = altDown;
+    $.Schedule(0.05, TickAlt);
+}
+
 (function() {
     GameEvents.Subscribe("request_detonate_selected", OnRequestDetonateSelected);
     GameEvents.Subscribe("update_mine_leaderboard", OnUpdateMineLeaderboard);
+    GameEvents.Subscribe("mine_planted", OnMinePlanted);
+    GameEvents.Subscribe("mine_removed", OnMineRemoved);
+    TickAlt();
 })();

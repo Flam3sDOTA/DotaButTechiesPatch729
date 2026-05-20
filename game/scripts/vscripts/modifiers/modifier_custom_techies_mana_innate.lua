@@ -64,11 +64,15 @@ function modifier_custom_techies_mana_innate:OnDeath(event)
     if not event.unit or event.unit:IsNull() then return end
     if not event.unit:IsRealHero() then return end
     if event.unit:GetTeamNumber() == self:GetParent():GetTeamNumber() then return end
-    
+
     local parent = self:GetParent()
     local pid = parent:GetPlayerOwnerID()
     if pid == -1 then return end
-    
+
+    local now = GameRules:GetGameTime()
+    if self.last_taunt and now - self.last_taunt < 3.0 then return end
+    self.last_taunt = now
+
     if RandomInt(1, 2) == 1 then
         local text = TAUNT_TEXTS[RandomInt(1, #TAUNT_TEXTS)]
         Say(PlayerResource:GetPlayer(pid), text, false)
