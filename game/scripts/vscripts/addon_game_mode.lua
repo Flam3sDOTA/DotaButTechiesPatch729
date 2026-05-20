@@ -309,27 +309,56 @@ function SlacksTechies:OnEntityKilled(event)
         end
     end
 
-	local killerName = nil
+    local mineType = nil
     if inflictor and inflictor.GetUnitName then
         local un = inflictor:GetUnitName()
-        if un == "npc_dota_techies_land_mine_custom" or un == "npc_dota_techies_custom_remote_mine" then
-            killerName = un
+        if un == "npc_dota_techies_land_mine_custom" then
+            mineType = "land"
+        elseif un == "npc_dota_techies_custom_remote_mine" then
+            mineType = "remote"
         end
     end
-    if not killerName and inflictor and inflictor.GetAbilityName then
+    if not mineType and inflictor and inflictor.GetAbilityName then
         local an = inflictor:GetAbilityName()
-        if an == "custom_techies_land_mines" or an == "custom_techies_land_mines_old" or an == "custom_techies_remote_mines" then
-            killerName = "mine"
+        if an == "custom_techies_land_mines" or an == "custom_techies_land_mines_old" then
+            mineType = "land"
+        elseif an == "custom_techies_remote_mines" then
+            mineType = "remote"
+        elseif an == "custom_techies_suicide12" or an == "custom_techies_suicide_old" then
+            if killed ~= inflictor:GetCaster() then
+                mineType = "suicide"
+            end
         end
     end
 
-    if killerName then
+    if mineType then
         local pid = killed:GetPlayerID()
         if pid and pid >= 0 then
-            SlacksTechies.MineDeaths[pid] = (SlacksTechies.MineDeaths[pid] or 0) + 1
+            local rec = SlacksTechies.MineDeaths[pid]
+            if type(rec) ~= "table" then
+                rec = { total = 0, land = 0, remote = 0, suicide = 0, multi = 0, first_at = nil, last_at = 0 }
+                SlacksTechies.MineDeaths[pid] = rec
+            end
+            rec.total     = rec.total + 1
+            rec[mineType] = (rec[mineType] or 0) + 1
+            rec.last_at   = GameRules:GetDOTATime(false, true)
+            rec.first_at  = rec.first_at or rec.last_at
             SlacksTechies:SendMineLeaderboard()
         end
     end
+end
+
+function SlacksTechies:RecordMultiKill(pids)
+    if not pids or #pids < 2 then return end
+    for _, pid in ipairs(pids) do
+        local rec = SlacksTechies.MineDeaths[pid]
+        if type(rec) ~= "table" then
+            rec = { total = 0, land = 0, remote = 0, suicide = 0, multi = 0, first_at = nil, last_at = 0 }
+            SlacksTechies.MineDeaths[pid] = rec
+        end
+        rec.multi = (rec.multi or 0) + 1
+    end
+    SlacksTechies:SendMineLeaderboard()
 end
 
 function SlacksTechies:OnDetonateSelectedMines(event)
@@ -847,15 +876,28 @@ function SlacksTechies:SendMineLeaderboard()
     for pid = 0, DOTA_MAX_TEAM_PLAYERS - 1 do
         if PlayerResource:IsValidPlayerID(pid) then
             local hero = PlayerResource:GetSelectedHeroEntity(pid)
-            local deaths = SlacksTechies.MineDeaths[pid] or 0
+            local rec  = SlacksTechies.MineDeaths[pid]
+            if type(rec) == "number" then
+                rec = { total = rec, land = 0, remote = 0, suicide = 0, multi = 0, first_at = 0, last_at = 0 }
+            end
+            local deaths = (rec and rec.total) or 0
             if hero and not (hero:GetUnitName() == "npc_dota_hero_techies" and deaths == 0) then
                 table.insert(board, {
-                    name = hero:GetUnitName(),
-					pid = pid,
-                    deaths = SlacksTechies.MineDeaths[pid] or 0
+                    name     = hero:GetUnitName(),
+                    pid      = pid,
+                    deaths   = deaths,
+                    land     = (rec and rec.land)     or 0,
+                    remote   = (rec and rec.remote)   or 0,
+                    suicide  = (rec and rec.suicide)  or 0,
+                    multi    = (rec and rec.multi)    or 0,
+                    first_at = (rec and rec.first_at) or 0,
+                    last_at  = (rec and rec.last_at)  or 0,
                 })
             end
         end
     end
-    CustomGameEventManager:Send_ServerToAllClients("update_mine_leaderboard", { board = board })
+    CustomGameEventManager:Send_ServerToAllClients("update_mine_leaderboard", {
+        board = board,
+        server_time = GameRules:GetDOTATime(false, true),
+    })
 end

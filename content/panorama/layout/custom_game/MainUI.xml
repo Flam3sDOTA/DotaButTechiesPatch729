@@ -39,14 +39,34 @@
         </Panel>
         <Panel id="MineLeaderboardPanel" hittest="true" style="visibility: collapse;">
             <Panel class="MineLBHeader">
-                <Label class="MineLBTitle" text="MINE DEATHS" />
-                <Panel class="MineLBHeaderSpacer" />
+                <Panel class="MineLBHeaderSideSpacer" />
+                <Label class="MineLBTitle" text="MINE DEATHS LEADERBOARD" />
                 <Button class="MineLBCloseBtn" onactivate="ToggleMineLeaderboard()" />
             </Panel>
             <Panel class="MineLBHeaderRow">
                 <Label class="MineLBHeadRank" text="#" />
                 <Label class="MineLBHeadName" text="HERO" />
-                <Label class="MineLBHeadDeaths" text="DEATHS" />
+                <Label class="MineLBHeadDeaths" text="TOTAL"
+                       onmouseover="UIShowTextTooltip('Total times this hero died to Proximity, Remote and Suicide.')"
+                       onmouseout="UIHideTextTooltip()" />
+                <Label class="MineLBHeadLand" text="PROXIMITY"
+                       onmouseover="UIShowTextTooltip('Times this hero died to a Proximity Mine.')"
+                       onmouseout="UIHideTextTooltip()" />
+                <Label class="MineLBHeadRemote" text="REMOTE"
+                       onmouseover="UIShowTextTooltip('Times this hero died to a Remote Mine.')"
+                       onmouseout="UIHideTextTooltip()" />
+                <Label class="MineLBHeadSuicide" text="SUICIDE"
+                       onmouseover="UIShowTextTooltip('Times this hero died to Blast Off/Suicide')"
+                       onmouseout="UIHideTextTooltip()" />
+                <Label class="MineLBHeadMulti" text="MULTI"
+                       onmouseover="UIShowTextTooltip('Times this hero died as part of a multi-kill blast (two or more heroes killed by the same ability).')"
+                       onmouseout="UIHideTextTooltip()" />
+                <Label class="MineLBHeadFirst" text="FIRST"
+                       onmouseover="UIShowTextTooltip('Game time when this hero first died to a Techies ability.')"
+                       onmouseout="UIHideTextTooltip()" />
+                <Label class="MineLBHeadLast" text="LAST"
+                       onmouseover="UIShowTextTooltip('How long ago this hero last died to a Techies ability.')"
+                       onmouseout="UIHideTextTooltip()" />
             </Panel>
             <Panel id="MineLBList" class="MineLBList" />
         </Panel>

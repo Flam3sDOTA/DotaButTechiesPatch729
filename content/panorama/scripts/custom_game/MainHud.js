@@ -44,40 +44,126 @@ if (customBtn1) {
 function ToggleMineLeaderboard() {
     var panel = $("#MineLeaderboardPanel");
     if (!panel) return;
-    panel.style.visibility = (panel.style.visibility === "visible") ? "collapse" : "visible";
+    var opening = panel.style.visibility !== "visible";
+    panel.style.visibility = opening ? "visible" : "collapse";
+    Game.EmitSound(opening ? "ui.profile_open" : "ui.profile_close");
+}
+
+var mineLBServerTime  = 0;
+var mineLBLocalSnap   = 0;
+var mineLBLastRefs    = [];
+
+function FormatClock(sec) {
+    if (sec === undefined || sec === null || sec === 0) return "—";
+    if (sec < 0) return "Pre-horn";
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return m + ":" + (s < 10 ? "0" : "") + s;
+}
+
+function FormatRelative(sec) {
+    if (!sec || sec < 0) return "—";
+    if (sec < 60) return Math.floor(sec) + "s ago";
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return m + ":" + (s < 10 ? "0" : "") + s + " ago";
+}
+
+function EffectiveServerTime() {
+    var elapsedSinceSnap = (Date.now() / 1000) - mineLBLocalSnap;
+    return mineLBServerTime + elapsedSinceSnap;
+}
+
+function UpdateLastAgo(label, lastAt) {
+    if (!lastAt || lastAt <= 0) {
+        label.text = "—";
+        return;
+    }
+    label.text = FormatRelative(EffectiveServerTime() - lastAt);
 }
 
 function OnUpdateMineLeaderboard(data) {
     var list = $("#MineLBList");
     if (!list) return;
     list.RemoveAndDeleteChildren();
+    mineLBLastRefs = [];
+
+    mineLBServerTime = data.server_time || 0;
+    mineLBLocalSnap  = Date.now() / 1000;
 
     var board = [];
     for (var k in data.board) board.push(data.board[k]);
-    board.sort(function(a, b) { return b.deaths - a.deaths; });
+    board.sort(function(a, b) {
+        if (b.deaths !== a.deaths) return b.deaths - a.deaths;
+        return a.pid - b.pid;
+    });
 
     for (var i = 0; i < board.length; i++) {
+        var entry = board[i];
         var row = $.CreatePanel("Panel", list, "");
         row.AddClass("MineLBRow");
-        if (i % 2 === 1) row.AddClass("MineLBRowAlt");
+        if (i === 0) row.AddClass("MineLBRow1");
+        else if (i % 2 === 1) row.AddClass("MineLBRowAlt");
 
         var rank = $.CreatePanel("Label", row, "");
         rank.AddClass(i < 3 ? "MineLBRankTop3" : "MineLBRank");
-        rank.text = (i + 1);
+        if (i === 0) {
+            rank.AddClass("MineLBRank1");
+            rank.text = "";
+        } else {
+            rank.text = (i + 1);
+            if (i === 1) rank.AddClass("MineLBRank2");
+            else if (i === 2) rank.AddClass("MineLBRank3");
+        }
 
         var portrait = $.CreatePanel("DOTAHeroImage", row, "");
         portrait.AddClass("MineLBPortrait");
-        portrait.heroname = board[i].name;
+        portrait.heroname = entry.name;
         portrait.heroimagestyle = "icon";
 
         var name = $.CreatePanel("Label", row, "");
         name.AddClass("MineLBName");
-        name.text = Players.GetPlayerName(board[i].pid);
+        name.text = Players.GetPlayerName(entry.pid);
 
         var deaths = $.CreatePanel("Label", row, "");
         deaths.AddClass("MineLBDeaths");
-        deaths.text = board[i].deaths;
+        deaths.text = entry.deaths;
+
+        var land = $.CreatePanel("Label", row, "");
+        land.AddClass("MineLBLand");
+        land.text = (entry.land || 0);
+
+        var remote = $.CreatePanel("Label", row, "");
+        remote.AddClass("MineLBRemote");
+        remote.text = (entry.remote || 0);
+
+        var suicide = $.CreatePanel("Label", row, "");
+        suicide.AddClass("MineLBSuicide");
+        suicide.text = (entry.suicide || 0);
+
+        var multi = $.CreatePanel("Label", row, "");
+        multi.AddClass("MineLBMulti");
+        multi.text = "x" + (entry.multi || 0);
+
+        var first = $.CreatePanel("Label", row, "");
+        first.AddClass("MineLBFirst");
+        first.text = FormatClock(entry.first_at);
+
+        var last = $.CreatePanel("Label", row, "");
+        last.AddClass("MineLBLast");
+        UpdateLastAgo(last, entry.last_at);
+        mineLBLastRefs.push({ label: last, last_at: entry.last_at });
     }
+}
+
+function TickMineLBRefresh() {
+    for (var i = 0; i < mineLBLastRefs.length; i++) {
+        var ref = mineLBLastRefs[i];
+        if (ref.label && ref.label.IsValid && ref.label.IsValid()) {
+            UpdateLastAgo(ref.label, ref.last_at);
+        }
+    }
+    $.Schedule(1, TickMineLBRefresh);
 }
 
 var MINE_RING_OWN  = "particles/mineringindicator.vpcf";
@@ -154,4 +240,5 @@ function TickAlt() {
     GameEvents.Subscribe("mine_planted", OnMinePlanted);
     GameEvents.Subscribe("mine_removed", OnMineRemoved);
     TickAlt();
+    TickMineLBRefresh();
 })();

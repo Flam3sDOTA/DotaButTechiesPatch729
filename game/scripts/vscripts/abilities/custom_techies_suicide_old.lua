@@ -31,6 +31,13 @@ function custom_techies_suicide_old:OnSpellStart()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
         DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false)
 
+    local pre_alive_heroes = {}
+    for _, enemy in pairs(enemies) do
+        if enemy and not enemy:IsNull() and enemy:IsRealHero() and enemy:IsAlive() then
+            table.insert(pre_alive_heroes, enemy)
+        end
+    end
+
     for _, enemy in pairs(enemies) do
         if enemy and not enemy:IsNull() then
             local dist = (enemy:GetAbsOrigin() - origin):Length2D()
@@ -46,6 +53,19 @@ function custom_techies_suicide_old:OnSpellStart()
                 damage_type = DAMAGE_TYPE_PHYSICAL,
             })
         end
+    end
+
+    local killed_pids = {}
+    for _, h in ipairs(pre_alive_heroes) do
+        if not h:IsNull() and not h:IsAlive() then
+            local pid = h:GetPlayerID()
+            if pid and pid >= 0 then
+                table.insert(killed_pids, pid)
+            end
+        end
+    end
+    if #killed_pids >= 2 and GameRules.SlacksTechies and GameRules.SlacksTechies.RecordMultiKill then
+        GameRules.SlacksTechies:RecordMultiKill(killed_pids)
     end
 
     if caster and not caster:IsNull() and caster:IsAlive() then
