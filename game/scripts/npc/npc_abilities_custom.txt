@@ -22,7 +22,6 @@
         "AbilityCharges"                "3"
         "AbilityValues"
         {
-            "damage"                    "200 400 600 800"
             "activation_delay"          "1.75"
             "radius"                    "400"
             "detonation_delay"          "1.6"
@@ -36,6 +35,11 @@
             {
                 "value"                 "100"
                 "special_bonus_scepter" "+300"
+            }
+            "damage"
+            {
+                "value"	                                  "200 400 600 800"
+                "special_bonus_unique_techies_25_l_2"     "+500"
             }
         }
     }
@@ -57,9 +61,9 @@
         "AbilityCooldown"               "0"
         "AbilityManaCost"               "110 130 150 170"
         "AbilityProcsMagicStick"        "1"
+        "AbilityCharges"                "3"
         "AbilityValues"
         {
-            "damage"                    "500 800 1100 1400"
             "activation_delay"          "1.75"
             "radius"                    "400"
             "detonation_delay"          "1.6"
@@ -75,10 +79,10 @@
                 "value"                                 "100"
                 "special_bonus_scepter"                 "+300"
             }
-            "AbilityCharges"
+            "damage"
             {
-                "value"	                                  "3"
-                "special_bonus_unique_techies_25_l_2"     "+3"
+                "value"	                                  "500 800 1100 1400"
+                "special_bonus_unique_techies_25_l_2"     "+500"
             }
         }
     }
@@ -272,7 +276,8 @@
         "LinkedAbility"                 "custom_techies_focused_detonate"
 
         "AbilityValues"
-        {
+        {   
+            "radius"                    "425"
             "duration"                  "600"
             "detonation_delay"          "0.25"
             "fade_time"                 "2.0"
@@ -285,11 +290,6 @@
             {
                 "value"                 "500"
                 "special_bonus_scepter" "+300"
-            }
-            "radius"
-            {
-                "value"	                                  "425"
-                "special_bonus_unique_techies_25_l_2"     "+575"
             }
         }
     }
