@@ -106,8 +106,8 @@
 		},
 		{
 			_class = "C_INIT_PositionOffset"
-			m_OffsetMax = [ 0.0, 0.0, 10.0 ]
-			m_OffsetMin = [ 0.0, 0.0, 10.0 ]
+			m_OffsetMax = [ 0.0, 0.0, 15.0 ]
+			m_OffsetMin = [ 0.0, 0.0, 15.0 ]
 		},
 		{
 			_class = "C_INIT_InitFloat"
