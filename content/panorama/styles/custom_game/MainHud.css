@@ -4,7 +4,7 @@
 }
 
 .TopLeftMenu {
-    width: 260px;
+    width: 270px;
     height: 40px;
     margin-top: 10px;
     margin-left: -5px;
@@ -84,8 +84,20 @@
     wash-color: #9FB7E3;
 }
 
+#CustomButton3 {
+    background-image: url("file://{images}/custom_game/icons/coffee.png");
+    background-size: 90%;
+    margin-top: 7px;
+    margin-left: 240px;
+    transition-duration: 0.3s;
+    transition-property: wash-color;
+    transition-timing-function: ease-in-out;
+    wash-color: #9FB7E3;
+}
+
 #CustomButton1:hover,
 #CustomButton2:hover,
+#CustomButton3:hover,
 #NewScoreboardButton:hover,
 #NewDashboardButton:hover,
 #NewSettingsButton:hover {
@@ -95,6 +107,7 @@
 
 #CustomButton1:active,
 #CustomButton2:active,
+#CustomButton3:active,
 #NewScoreboardButton:active,
 #NewDashboardButton:active,
 #NewSettingsButton:active {

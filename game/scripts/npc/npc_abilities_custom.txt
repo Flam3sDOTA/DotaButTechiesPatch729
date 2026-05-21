@@ -183,7 +183,7 @@
             }
             "partial_damage"
             {
-                "value"	                                "260 300 340 380"
+                "value"	                                "350 500 650 850"
                 "special_bonus_unique_techies_15_r_old" "+300"
             }
             "AbilityCooldown"
